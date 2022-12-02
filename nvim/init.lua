@@ -69,7 +69,10 @@ local startup = function(use)
   use 'nvim-treesitter/nvim-treesitter'     -- Better syntax highlighting & other features, use :TSInstall <language> & :TSUpdate
   use 'lukas-reineke/indent-blankline.nvim' -- Add virtual lines to indentation
   use 'nvim-lualine/lualine.nvim'           -- Status line
-  use 'romgrk/barbar.nvim'                  -- Tabs improvements
+  use 'romgrk/barbar.nvim'                  -- Better tabs
+
+  -- Floating terminal
+  use 'voldikss/vim-floaterm'
 
   -- Web devicons requires nerd font. Install via `brew tap homebrew/cask-fonts` & `brew install --cask font-hack-nerd-font`
   use 'nvim-tree/nvim-web-devicons'         -- Dev icons
@@ -141,14 +144,13 @@ local startup = function(use)
   }
 
   -- Status line configuration
-  require('lualine').setup {
+  require('lualine').setup {}
 
-  }
-
-  -- Tabs configuration
-  require('bufferline').setup {
-
-  }
+  -- Floating terminal mappings
+  vim.g.floaterm_keymap_toggle = '<F12>'
+  -- Floating terminal mappings for Julia
+  vim.keymap.set('n', '<Leader>tjj', '<CMD>FloatermNew! --name=julia --position=right --wintype=float --disposable=false --title=Julia --width=0.4 --height=0.9 julia<CR>')
+  vim.keymap.set('n', '<Leader>tjf', '<CMD>%FloatermSend --name=julia<CR>')
 
   -- Telescope mappings
   local telescope = require('telescope.builtin')

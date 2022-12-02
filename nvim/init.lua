@@ -3,6 +3,7 @@
 -- [ Editor
 vim.g.mapleader = '\\'
 
+vim.opt.timeout = false        -- No timeout for commands
 vim.opt.number = true          -- Show line numbers
 vim.opt.relativenumber = true  -- Show line numbers relative to the current line
 vim.opt.wrap = false           -- Do not wrap lines
@@ -148,15 +149,22 @@ local startup = function(use)
 
   -- Floating terminal mappings
   vim.g.floaterm_keymap_toggle = '<F12>'
+  vim.keymap.set('t', '<F8>', '<CMD>FloatermUpdate --position=topright --width=0.2 --height=0.2<CR>')
+  vim.keymap.set('t', '<F9>', '<CMD>FloatermUpdate --position=center --width=0.9 --height=0.9<CR>')
+  vim.keymap.set('t', '<F10>', '<CMD>FloatermUpdate --position=right --width=0.4 --height=0.9<CR>')
   -- Floating terminal mappings for Julia
-  vim.keymap.set('n', '<Leader>tjj', '<CMD>FloatermNew! --name=julia --position=right --wintype=float --disposable=false --title=Julia --width=0.4 --height=0.9 julia<CR>')
-  vim.keymap.set('n', '<Leader>tjf', '<CMD>%FloatermSend --name=julia<CR>')
-  vim.keymap.set('n', '<Leader>tjk', '<CMD>FloatermKill --name=julia<CR>')
-  vim.keymap.set('n', '<Leader>tjh', '<CMD>FloatermHide --name=julia<CR>')
-  vim.keymap.set('n', '<Leader>tjs', '<CMD>FloatermShow --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>jj', '<CMD>FloatermNew! --name=julia --position=right --wintype=float --disposable=false --title=Julia --width=0.4 --height=0.9 julia<CR>')
+  vim.keymap.set('n', '<Leader>jf', '<CMD>%FloatermSend --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>jl', '<CMD>FloatermSend --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>jv', '<CMD>\'<,\'>FloatermSend --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>jk', '<CMD>FloatermKill --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>jh', '<CMD>FloatermHide --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>js', '<CMD>FloatermShow --name=julia<CR>')
   -- Floating terminal mappings for regular terminal
   vim.keymap.set('n', '<Leader>tt', '<CMD>FloatermNew! --name=terminal --position=right --wintype=float --disposable=true --title=Terminal --width=0.4 --height=0.9 <CR>')
 
+  -- Window mappings
+  vim.keymap.set('n', '<C-w>b', '<CMD>vertical resize 1000<CR>z1000<CR>')
 
   -- Telescope mappings
   local telescope = require('telescope.builtin')

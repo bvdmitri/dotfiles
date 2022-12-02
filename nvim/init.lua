@@ -68,6 +68,7 @@ local startup = function(use)
   use 'neovim/nvim-lspconfig'               -- Configuration for NVIM Language Server Protocol Client
   use 'j-hui/fidget.nvim'                   -- Language Server Protocol status bar
   use 'nvim-treesitter/nvim-treesitter'     -- Better syntax highlighting & other features, use :TSInstall <language> & :TSUpdate
+  use 'nvim-treesitter/nvim-treesitter-textobjects' -- Syntax aware text-objects, select, move, swap, and peek support.
   use 'lukas-reineke/indent-blankline.nvim' -- Add virtual lines to indentation
   use 'nvim-lualine/lualine.nvim'           -- Status line
   use 'romgrk/barbar.nvim'                  -- Better tabs
@@ -141,7 +142,43 @@ local startup = function(use)
   require('nvim-treesitter.configs').setup { 
     ensure_installed = { "julia" },
     auto_install = true,
-    highlight = { enable = true }
+    highlight = { enable = true },
+    textobjects = {
+      select = {
+        lookahead = true,
+        keymaps = {
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ab"] = "@block.outer",
+          ["ib"] = "@block.inner",
+          ["ac"] = "@comment.outer",
+        }
+      },
+      move = {
+        enable = true,
+        set_jumps = true,
+        goto_next_start = {
+          ["]m"] = "@function.outer",
+          ["]c"] = "@comment.outer",
+          ["]b"] = "@block.outer",
+        },
+        goto_next_end = {
+          ["]M"] = "@function.outer",
+          ["]C"] = "@comment.outer",
+          ["]B"] = "@block.outer",
+        },
+        goto_previous_start = {
+          ["[m"] = "@function.outer",
+          ["[c"] = "@comment.outer",
+          ["[b"] = "@block.outer",
+        },
+        goto_previous_end = {
+          ["[M"] = "@function.outer",
+          ["[C"] = "@comment.outer",
+          ["[B"] = "@block.outer",
+        },
+      }
+    }
   }
 
   -- Status line configuration

@@ -151,6 +151,12 @@ local startup = function(use)
   -- Floating terminal mappings for Julia
   vim.keymap.set('n', '<Leader>tjj', '<CMD>FloatermNew! --name=julia --position=right --wintype=float --disposable=false --title=Julia --width=0.4 --height=0.9 julia<CR>')
   vim.keymap.set('n', '<Leader>tjf', '<CMD>%FloatermSend --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>tjk', '<CMD>FloatermKill --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>tjh', '<CMD>FloatermHide --name=julia<CR>')
+  vim.keymap.set('n', '<Leader>tjs', '<CMD>FloatermShow --name=julia<CR>')
+  -- Floating terminal mappings for regular terminal
+  vim.keymap.set('n', '<Leader>tt', '<CMD>FloatermNew! --name=terminal --position=right --wintype=float --disposable=true --title=Terminal --width=0.4 --height=0.9 <CR>')
+
 
   -- Telescope mappings
   local telescope = require('telescope.builtin')

@@ -67,12 +67,15 @@ local startup = function(use)
   use 'neovim/nvim-lspconfig'               -- Configuration for NVIM Language Server Protocol Client
   use 'j-hui/fidget.nvim'                   -- Language Server Protocol status bar
   use 'nvim-treesitter/nvim-treesitter'     -- Better syntax highlighting & other features, use :TSInstall <language> & :TSUpdate
+  use 'lukas-reineke/indent-blankline.nvim' -- Add virtual lines to indentation
+  use 'nvim-lualine/lualine.nvim'           -- Status line
+  use 'romgrk/barbar.nvim'                  -- Tabs improvements
 
   -- Web devicons requires nerd font. Install via `brew tap homebrew/cask-fonts` & `brew install --cask font-hack-nerd-font`
   use 'nvim-tree/nvim-web-devicons'         -- Dev icons
 
   -- Telescope also requires `ripgrep` & `df` commands. Install via `brew install ripgrep` & `brew install fd`
-  use 'nvim-elescope/telescope-fzf-native.nvim' -- Better search performance for the Telescope
+  use 'nvim-telescope/telescope-fzf-native.nvim' -- Better search performance for the Telescope
   use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { { 'nvim-lua/plenary.nvim', } } } -- File finder
 
   -- use 'vim-airline/vim-airline' -- Status line at the bottom
@@ -123,16 +126,28 @@ local startup = function(use)
       flags = lsp_flags
   }
 
-  require('fidget').setup{
+  -- LSP real-time status configuration
+  require('fidget').setup {
     text = {
         spinner = "dots"
     }
   }
 
+  -- Treesitter configuration
   require('nvim-treesitter.configs').setup { 
     ensure_installed = { "julia" },
     auto_install = true,
     highlight = { enable = true }
+  }
+
+  -- Status line configuration
+  require('lualine').setup {
+
+  }
+
+  -- Tabs configuration
+  require('bufferline').setup {
+
   }
 
   -- Telescope mappings

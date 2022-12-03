@@ -62,16 +62,13 @@ local startup = function(use)
   -- Themes & Visuals
   use { 'sainnhe/everforest' , as = 'everforest' }
 
-  vim.cmd.colorscheme("everforest")
-
   -- Code & IDEA
   use 'neovim/nvim-lspconfig'               -- Configuration for NVIM Language Server Protocol Client
   use 'j-hui/fidget.nvim'                   -- Language Server Protocol status bar
   use 'nvim-treesitter/nvim-treesitter'     -- Better syntax highlighting & other features, use :TSInstall <language> & :TSUpdate
-  use 'nvim-treesitter/nvim-treesitter-textobjects' -- Syntax aware text-objects, select, move, swap, and peek support.
   use 'lukas-reineke/indent-blankline.nvim' -- Add virtual lines to indentation
   use 'nvim-lualine/lualine.nvim'           -- Status line
-  use 'romgrk/barbar.nvim'                  -- Better tabs
+  use 'declancm/cinnamon.nvim'              -- Smooth scroll
 
   -- Floating terminal
   use 'voldikss/vim-floaterm'
@@ -83,10 +80,10 @@ local startup = function(use)
   use 'nvim-telescope/telescope-fzf-native.nvim' -- Better search performance for the Telescope
   use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { { 'nvim-lua/plenary.nvim', } } } -- File finder
 
-  -- use 'vim-airline/vim-airline' -- Status line at the bottom
-
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then packer.sync() end
+
+  vim.cmd.colorscheme("everforest")
 
   -- LSP Mappings
   local opts = { noremap = true, silent = true }
@@ -138,48 +135,22 @@ local startup = function(use)
     }
   }
 
+  -- Smooth scrool configuration
+  require('cinnamon').setup {
+    default_keymaps = true,
+    extra_keymaps = false,
+    default_delay = 5,
+    extended_keymaps = true,
+    max_length = -1,
+    scroll_limit = 100
+  }
+
   -- Treesitter configuration
   require('nvim-treesitter.configs').setup { 
     ensure_installed = { "julia" },
     auto_install = true,
     highlight = { enable = true },
-    textobjects = {
-      select = {
-        lookahead = true,
-        keymaps = {
-          ["af"] = "@function.outer",
-          ["if"] = "@function.inner",
-          ["ab"] = "@block.outer",
-          ["ib"] = "@block.inner",
-          ["ac"] = "@comment.outer",
-        }
-      },
-      move = {
-        enable = true,
-        set_jumps = true,
-        goto_next_start = {
-          ["]m"] = "@function.outer",
-          ["]c"] = "@comment.outer",
-          ["]b"] = "@block.outer",
-        },
-        goto_next_end = {
-          ["]M"] = "@function.outer",
-          ["]C"] = "@comment.outer",
-          ["]B"] = "@block.outer",
-        },
-        goto_previous_start = {
-          ["[m"] = "@function.outer",
-          ["[c"] = "@comment.outer",
-          ["[b"] = "@block.outer",
-        },
-        goto_previous_end = {
-          ["[M"] = "@function.outer",
-          ["[C"] = "@comment.outer",
-          ["[B"] = "@block.outer",
-        },
-      }
-    }
-  }
+ }
 
   -- Status line configuration
   require('lualine').setup {}
@@ -205,18 +176,18 @@ local startup = function(use)
 
   -- Telescope mappings
   local telescope = require('telescope.builtin')
-  vim.keymap.set('n', '<Leader>ff', telescope.find_files)
-  vim.keymap.set('n', '<Leader>fg', telescope.live_grep)
-  vim.keymap.set('n', '<Leader>fb', telescope.buffers)
-  vim.keymap.set('n', '<Leader>fh', telescope.help_tags)
-  vim.keymap.set('n', '<Leader>fm', telescope.marks)
-  vim.keymap.set('n', '<Leader>fc', telescope.commands)
-  vim.keymap.set('n', '<Leader>fr', telescope.registers)
-  vim.keymap.set('n', '<Leader>ld', telescope.lsp_definitions)
-  vim.keymap.set('n', '<Leader>li', telescope.lsp_implementations)
-  vim.keymap.set('n', '<Leader>ls', telescope.lsp_document_symbols)
-  vim.keymap.set('n', '<Leader>ly', telescope.lsp_workspace_symbols)
-  vim.keymap.set('n', '<Leader>ld', telescope.diagnostics)
+  vim.keymap.set('n', '<space>f', telescope.find_files)
+  vim.keymap.set('n', '<space>h', telescope.help_tags)
+  -- vim.keymap.set('n', '<Leader>fg', telescope.live_grep)
+  -- vim.keymap.set('n', '<Leader>fb', telescope.buffers)
+  -- vim.keymap.set('n', '<Leader>fm', telescope.marks)
+  -- vim.keymap.set('n', '<Leader>fc', telescope.commands)
+  -- vim.keymap.set('n', '<Leader>fr', telescope.registers)
+  -- vim.keymap.set('n', '<Leader>ld', telescope.lsp_definitions)
+  -- vim.keymap.set('n', '<Leader>li', telescope.lsp_implementations)
+  -- vim.keymap.set('n', '<Leader>ls', telescope.lsp_document_symbols)
+  -- vim.keymap.set('n', '<Leader>ly', telescope.lsp_workspace_symbols)
+  -- vim.keymap.set('n', '<Leader>ld', telescope.diagnostics)
 
 end
 

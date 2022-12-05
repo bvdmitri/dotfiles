@@ -3,6 +3,7 @@
 -- [ Editor
 vim.g.mapleader = '\\'
 
+vim.opt.showmode = false       -- Do not show the mode / it is displayed in the status line
 vim.opt.timeout = false        -- No timeout for commands
 vim.opt.number = true          -- Show line numbers
 vim.opt.relativenumber = true  -- Show line numbers relative to the current line
@@ -19,7 +20,6 @@ vim.opt.splitright = true
 -- [ Backup
 vim.opt.backup = false
 vim.opt.writebackup = false
-vim.opt.backupext = ".vbackup"
 -- ] Backup
 
 -- [ Autoread
@@ -27,7 +27,7 @@ vim.opt.autoread = true -- Autoreload files automatically
 -- ] Autoread
 
 -- [ list & listchars
-vim.opt.list = true
+-- vim.opt.list = true
 -- vim.opt.listchars:append('leadmultispace:···⥑') -- Leading spaces highlighting
 -- ] list & listchars
 
@@ -68,7 +68,6 @@ local startup = function(use)
   use 'nvim-treesitter/nvim-treesitter'     -- Better syntax highlighting & other features, use :TSInstall <language> & :TSUpdate
   use 'lukas-reineke/indent-blankline.nvim' -- Add virtual lines to indentation
   use 'nvim-lualine/lualine.nvim'           -- Status line
-  use 'declancm/cinnamon.nvim'              -- Smooth scroll
 
   -- Floating terminal
   use 'voldikss/vim-floaterm'
@@ -87,8 +86,6 @@ local startup = function(use)
 
   -- LSP Mappings
   local opts = { noremap = true, silent = true }
-  vim.keymap.set('n', '<Leader>ds', vim.diagnostic.show, opts)
-  vim.keymap.set('n', '<Leader>dh', vim.diagnostic.hide, opts)
   vim.keymap.set('n', '<Leader>df', vim.diagnostic.open_float, opts)
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
@@ -101,19 +98,20 @@ local startup = function(use)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    vim.keymap.set('n', '<Leader>cr', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set('n', '<Leader>ca', vim.lsp.buf.code_action, bufopts)
-    vim.keymap.set('n', '<Leader>cf', function() vim.lsp.buf.format { async = true } end, bufopts)
 
+    vim.keymap.set('n', '<C-l>r', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set('n', '<C-l>a', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', '<C-l>f', vim.lsp.buf.format, bufopts)
+
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+
+    -- "Go to" related commands start with letter "g"
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-
-
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set('n', 'gs', vim.lsp.buf.type_definition, bufopts)
   end
 
   local lsp_flags = {
@@ -133,16 +131,6 @@ local startup = function(use)
     text = {
         spinner = "dots"
     }
-  }
-
-  -- Smooth scrool configuration
-  require('cinnamon').setup {
-    default_keymaps = true,
-    extra_keymaps = false,
-    default_delay = 5,
-    extended_keymaps = true,
-    max_length = -1,
-    scroll_limit = 100
   }
 
   -- Treesitter configuration
@@ -178,16 +166,16 @@ local startup = function(use)
   local telescope = require('telescope.builtin')
   vim.keymap.set('n', '<space>f', telescope.find_files)
   vim.keymap.set('n', '<space>h', telescope.help_tags)
-  -- vim.keymap.set('n', '<Leader>fg', telescope.live_grep)
-  -- vim.keymap.set('n', '<Leader>fb', telescope.buffers)
-  -- vim.keymap.set('n', '<Leader>fm', telescope.marks)
-  -- vim.keymap.set('n', '<Leader>fc', telescope.commands)
-  -- vim.keymap.set('n', '<Leader>fr', telescope.registers)
-  -- vim.keymap.set('n', '<Leader>ld', telescope.lsp_definitions)
-  -- vim.keymap.set('n', '<Leader>li', telescope.lsp_implementations)
-  -- vim.keymap.set('n', '<Leader>ls', telescope.lsp_document_symbols)
-  -- vim.keymap.set('n', '<Leader>ly', telescope.lsp_workspace_symbols)
-  -- vim.keymap.set('n', '<Leader>ld', telescope.diagnostics)
+  vim.keymap.set('n', '<space>g', telescope.live_grep)
+  vim.keymap.set('n', '<space>b', telescope.buffers)
+  vim.keymap.set('n', '<space>m', telescope.marks)
+  vim.keymap.set('n', '<space>c', telescope.commands)
+  vim.keymap.set('n', '<space>r', telescope.registers)
+  vim.keymap.set('n', '<space>d', telescope.diagnostics)
+  vim.keymap.set('n', '<space>i', telescope.lsp_implementations)
+  vim.keymap.set('n', '<space>D', telescope.lsp_definitions)
+  vim.keymap.set('n', '<space>s', telescope.lsp_document_symbols)
+  vim.keymap.set('n', '<space>S', telescope.lsp_workspace_symbols)
 
 end
 

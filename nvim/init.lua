@@ -40,6 +40,15 @@ vim.opt.autoindent = true -- Copy indent from current line when starting a new l
 vim.opt.copyindent = true -- Copy the structure of the existing lines indent when autoindenting a new line.
 -- ] spaces & tabs
 
+-- Read the current directory's path
+local pwdhandle = io.popen("pwd")
+vim.b.pwd = pwdhandle:read()
+pwdhandle:close()
+-- Get the basename of the current directory's path
+local wdhandle = io.popen(string.format("basename %s", vim.b.pwd))
+vim.b.wd = wdhandle:read()
+wdhandle:close()
+
 -- [ Packer bootstrap
 local ensure_packer = function()
   local fn = vim.fn
@@ -170,6 +179,7 @@ local startup = function(use)
       debounce_text_changes = 150
   }
 
+
   local lspconfig = require('lspconfig')
 
   lspconfig.julials.setup {
@@ -178,13 +188,19 @@ local startup = function(use)
     capabilities = autocomplete
   }
 
+  vim.b.texlabwd = string.format("/tmp/tectonic-latex/%s", vim.b.wd) 
+
+  -- Create texlab working directory if it does not exist
+  os.execute(string.format("mkdir -p %s", vim.b.texlabwd))
+
   lspconfig.texlab.setup {
     on_attach = on_attach,
     settings = {
       texlab = {
+        auxDirectory = vim.b.texlabwd,
         build = {
           executable = "tectonic",
-          args = {  "-X", "compile", "%f", "--synctex", "--keep-logs", "--keep-intermediates" },
+          args = {  "-X", "compile", "%f", "-p", "--synctex", "--keep-logs", "--keep-intermediates", "--outdir", vim.b.texlabwd },
           onSave = true,
         },
         forwardSearch = {

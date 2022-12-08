@@ -69,6 +69,14 @@ local startup = function(use)
   use 'lukas-reineke/indent-blankline.nvim' -- Add virtual lines to indentation
   use 'nvim-lualine/lualine.nvim'           -- Status line
 
+  -- Autocompletion plugins for the LSP
+  use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
+  use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+  use 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
+  use 'L3MON4D3/LuaSnip' -- Snippets plugin
+
+  local autocomplete = require("cmp_nvim_lsp").default_capabilities()
+
   -- Floating terminal
   use 'voldikss/vim-floaterm'
 
@@ -112,6 +120,49 @@ local startup = function(use)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
     vim.keymap.set('n', 'gs', vim.lsp.buf.type_definition, bufopts)
+
+    -- Autocompletion mappings
+    local luasnip = require('luasnip')
+    local cmp = require('cmp')
+    cmp.setup {
+      snippet = {
+        expand = function(args)
+          luasnip.lsp_expand(args.body)
+        end,
+      },
+      mapping = cmp.mapping.preset.insert({
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<CR>'] = cmp.mapping.confirm {
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        },
+        ['<Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+      }),
+      sources = {
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+      },
+    }
+
   end
 
   local lsp_flags = {
@@ -122,14 +173,32 @@ local startup = function(use)
   local lspconfig = require('lspconfig')
 
   lspconfig.julials.setup {
-      on_attach = on_attach,
-      flags = lsp_flags
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = autocomplete
+  }
+
+  lspconfig.texlab.setup {
+    settings = {
+      texlab = {
+        build = {
+          executable = "tectonic",
+          args = {  "-X", "compile", "%f", "--synctex", "--keep-logs", "--keep-intermediates" },
+          onSave = true,
+        },
+        forwardSearch = {
+          executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
+          args = { "%l", "%p", "%f" }
+        }
+      }
+    },
+    capabilities = autocomplete
   }
 
   -- LSP real-time status configuration
   require('fidget').setup {
     text = {
-        spinner = "dots"
+      spinner = "dots"
     }
   }
 

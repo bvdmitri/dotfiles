@@ -9,10 +9,9 @@ vim.opt.number = true          -- Show line numbers
 vim.opt.relativenumber = true  -- Show line numbers relative to the current line
 vim.opt.wrap = false           -- Do not wrap lines
 
-vim.keymap.set({'n', 'x'}, 'cp', '"+y') -- Use 'cp' for copy from the system clipboard
-vim.keymap.set({'n', 'x'}, 'cv', '"+p') -- Use 'cv' for paste from the system clipboard
 vim.keymap.set('n', '<Leader>th', '<CMD>set hlsearch!<CR>') -- Toggle search highlithing
 vim.keymap.set('n', '<Leader>ev', '<CMD>edit $MYVIMRC<CR>') -- Open & edit vim.lua config
+vim.keymap.set('n', '<Leader>nt', '<CMD>tabnew<CR>')   -- Open a new tab
 
 vim.opt.splitright = true
 -- ] Editor
@@ -67,6 +66,7 @@ local packer = require('packer')
 -- Startup function
 local startup = function(use)
   use 'wbthomason/packer.nvim'  -- The boss of all packages
+  use 'nvim-lua/plenary.nvim'   -- Meta package with useful Lua functions 
 
   -- Themes & Visuals
   use { 'sainnhe/everforest' , as = 'everforest' }
@@ -77,6 +77,7 @@ local startup = function(use)
   use 'nvim-treesitter/nvim-treesitter'     -- Better syntax highlighting & other features, use :TSInstall <language> & :TSUpdate
   use 'lukas-reineke/indent-blankline.nvim' -- Add virtual lines to indentation
   use 'nvim-lualine/lualine.nvim'           -- Status line
+  use 'folke/todo-comments.nvim'            -- Todo comments features
 
   -- Autocompletion plugins for the LSP
   use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
@@ -90,11 +91,11 @@ local startup = function(use)
   use 'voldikss/vim-floaterm'
 
   -- Web devicons requires nerd font. Install via `brew tap homebrew/cask-fonts` & `brew install --cask font-hack-nerd-font`
-  use 'nvim-tree/nvim-web-devicons'         -- Dev icons
+  use 'nvim-tree/nvim-web-devicons' -- Dev icons
 
   -- Telescope also requires `ripgrep` & `df` commands. Install via `brew install ripgrep` & `brew install fd`
-  use 'nvim-telescope/telescope-fzf-native.nvim' -- Better search performance for the Telescope
-  use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { { 'nvim-lua/plenary.nvim', } } } -- File finder
+  use 'nvim-telescope/telescope-fzf-native.nvim'         -- Better search performance for the Telescope
+  use { 'nvim-telescope/telescope.nvim', tag = '0.1.0' } -- File finder
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then packer.sync() end
@@ -206,6 +207,9 @@ local startup = function(use)
         forwardSearch = {
           executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
           args = { "%l", "%p", "%f" }
+        },
+        latexindent = {
+          modifyLineBreaks = true
         }
       }
     },
@@ -229,24 +233,29 @@ local startup = function(use)
   -- Status line configuration
   require('lualine').setup {}
 
+  -- TODO comments plugin configuration
+  require("todo-comments").setup {}
+
   -- Floating terminal mappings
   vim.g.floaterm_keymap_toggle = '<F12>'
   vim.keymap.set('t', '<F8>', '<CMD>FloatermUpdate --position=topright --width=0.2 --height=0.2<CR>')
   vim.keymap.set('t', '<F9>', '<CMD>FloatermUpdate --position=center --width=0.9 --height=0.9<CR>')
   vim.keymap.set('t', '<F10>', '<CMD>FloatermUpdate --position=right --width=0.4 --height=0.9<CR>')
-  -- Floating terminal mappings for Julia
-  vim.keymap.set('n', '<Leader>jj', '<CMD>FloatermNew! --name=julia --position=right --wintype=float --disposable=false --title=Julia --width=0.4 --height=0.9 julia<CR>')
-  vim.keymap.set('n', '<Leader>jf', '<CMD>%FloatermSend --name=julia<CR>')
-  vim.keymap.set('n', '<Leader>jl', '<CMD>FloatermSend --name=julia<CR>')
-  vim.keymap.set('n', '<Leader>jv', '<CMD>\'<,\'>FloatermSend --name=julia<CR>')
-  vim.keymap.set('n', '<Leader>jk', '<CMD>FloatermKill --name=julia<CR>')
-  vim.keymap.set('n', '<Leader>jh', '<CMD>FloatermHide --name=julia<CR>')
-  vim.keymap.set('n', '<Leader>js', '<CMD>FloatermShow --name=julia<CR>')
+
   -- Floating terminal mappings for regular terminal
   vim.keymap.set('n', '<Leader>tt', '<CMD>FloatermNew! --name=terminal --position=right --wintype=float --disposable=true --title=Terminal --width=0.4 --height=0.9 <CR>')
 
+  -- Floating terminal mappings for Julia
+  -- vim.keymap.set('n', '<Leader>jj', '<CMD>FloatermNew! --name=julia --position=right --wintype=float --disposable=false --title=Julia --width=0.4 --height=0.9 julia<CR>')
+  -- vim.keymap.set('n', '<Leader>jf', '<CMD>%FloatermSend --name=julia<CR>')
+  -- vim.keymap.set('n', '<Leader>jl', '<CMD>FloatermSend --name=julia<CR>')
+  -- vim.keymap.set('n', '<Leader>jv', '<CMD>\'<,\'>FloatermSend --name=julia<CR>')
+  -- vim.keymap.set('n', '<Leader>jk', '<CMD>FloatermKill --name=julia<CR>')
+  -- vim.keymap.set('n', '<Leader>jh', '<CMD>FloatermHide --name=julia<CR>')
+  -- vim.keymap.set('n', '<Leader>js', '<CMD>FloatermShow --name=julia<CR>')
+
   -- Window mappings
-  vim.keymap.set('n', '<C-w>b', '<CMD>vertical resize 1000<CR>z1000<CR>')
+  vim.keymap.set('n', '<C-w>b', '<CMD>vertical resize 1000<CR>z1000<CR>') -- Make a window full screen
 
   -- Telescope mappings
   local telescope = require('telescope.builtin')
@@ -262,6 +271,8 @@ local startup = function(use)
   vim.keymap.set('n', '<space>D', telescope.lsp_definitions)
   vim.keymap.set('n', '<space>s', telescope.lsp_document_symbols)
   vim.keymap.set('n', '<space>S', telescope.lsp_workspace_symbols)
+  vim.keymap.set('n', '<space>t', '<CMD>TodoTelescope<CR>')
+
 
 end
 

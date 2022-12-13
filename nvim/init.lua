@@ -10,8 +10,12 @@ vim.opt.relativenumber = true  -- Show line numbers relative to the current line
 vim.opt.wrap = false           -- Do not wrap lines
 
 vim.keymap.set('n', '<Leader>th', '<CMD>set hlsearch!<CR>') -- Toggle search highlithing
-vim.keymap.set('n', '<Leader>ev', '<CMD>edit $MYVIMRC<CR>') -- Open & edit vim.lua config
 vim.keymap.set('n', '<Leader>nt', '<CMD>tabnew<CR>')   -- Open a new tab
+
+-- [ Utility keymaps
+vim.keymap.set('n', '<Leader>ev', '<CMD>edit $MYVIMRC<CR>') -- Open & edit vim.lua config
+vim.keymap.set('n', '<Leader>up', '<CMD>PackerSync<CR>')    -- Update packages
+-- ] Utility keymaps
 
 vim.opt.splitright = true
 -- ] Editor

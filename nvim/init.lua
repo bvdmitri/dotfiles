@@ -3,22 +3,22 @@
 -- [ Editor
 vim.g.mapleader = '\\'
 
-vim.opt.showmode = false       -- Do not show the mode / it is displayed in the status line
-vim.opt.timeout = false        -- No timeout for commands
-vim.opt.number = true          -- Show line numbers
-vim.opt.relativenumber = true  -- Show line numbers relative to the current line
-vim.opt.wrap = false           -- Do not wrap lines
-
-vim.keymap.set('n', '<Leader>th', '<CMD>set hlsearch!<CR>') -- Toggle search highlithing
-vim.keymap.set('n', '<Leader>nt', '<CMD>tabnew<CR>')   -- Open a new tab
+vim.opt.showmode = false                 -- Do not show the mode / it is displayed in the status line
+vim.opt.timeout = false                  -- No timeout for commands
+vim.opt.number = true                    -- Show line numbers
+vim.opt.relativenumber = true            -- Show line numbers relative to the current line
+vim.opt.wrap = false                     -- Do not wrap lines
+vim.opt.splitright = true                -- Splits windows on right
+vim.opt.wildmode = { "longest", "list" } -- Changes autosuggestions to bash like style
+vim.opt.history = 1000                   -- Saves more commands in history
+-- ] Editor
 
 -- [ Utility keymaps
+vim.keymap.set('n', '<Leader>th', '<CMD>set hlsearch!<CR>') -- Toggle search highlithing
+vim.keymap.set('n', '<Leader>nt', '<CMD>tabnew<CR>')        -- Open a new tab
 vim.keymap.set('n', '<Leader>ev', '<CMD>edit $MYVIMRC<CR>') -- Open & edit vim.lua config
 vim.keymap.set('n', '<Leader>up', '<CMD>PackerSync<CR>')    -- Update packages
 -- ] Utility keymaps
-
-vim.opt.splitright = true
--- ] Editor
 
 -- [ Backup
 vim.opt.backup = false

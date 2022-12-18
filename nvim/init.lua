@@ -1,5 +1,3 @@
-
-
 -- [ Editor
 vim.g.mapleader = '\\'
 
@@ -8,16 +6,31 @@ vim.opt.timeout = false                  -- No timeout for commands
 vim.opt.number = true                    -- Show line numbers
 vim.opt.relativenumber = true            -- Show line numbers relative to the current line
 vim.opt.wrap = false                     -- Do not wrap lines
+vim.opt.scrolloff = 8                    -- Scroll offset
 vim.opt.splitright = true                -- Splits windows on right
 vim.opt.wildmode = { "longest", "list" } -- Changes autosuggestions to bash like style
 vim.opt.history = 1000                   -- Saves more commands in history
+vim.opt.termguicolors = true             -- Enable 24-bit RGB color in the UI
+vim.opt.cursorline = true                -- Highlight the line of the cursor
+vim.opt.cursorlineopt = 'number'         -- Highlight the number of the line instead
+vim.opt.updatetime = 1000                -- Write .swap file if nothing happens for 1000ms
+vim.opt.colorcolumn = '120'              -- Hightlight the 120th column
 -- ] Editor
+
+-- [ netrw settings
+vim.g.netrw_preview = 1    -- Split preview vertically
+vim.g.netrw_liststyle = 3  -- Use "tree" listing style
+vim.g.netrw_winsize = 30   -- Use only 30% of columns available for listing, preview 70%
+-- ] netrw settings
 
 -- [ Utility keymaps
 vim.keymap.set('n', '<Leader>th', '<CMD>set hlsearch!<CR>') -- Toggle search highlithing
 vim.keymap.set('n', '<Leader>nt', '<CMD>tabnew<CR>')        -- Open a new tab
 vim.keymap.set('n', '<Leader>ev', '<CMD>edit $MYVIMRC<CR>') -- Open & edit vim.lua config
+vim.keymap.set('n', '<Leader>ex', '<CMD>Explore<CR>')       -- Open netrw explorer
+vim.keymap.set('n', '<Leader>ec', '<CMD>edit.<CR>')       -- Open netrw explorer
 vim.keymap.set('n', '<Leader>up', '<CMD>PackerSync<CR>')    -- Update packages
+vim.keymap.set('n', '<Leader>uu', '<CMD>PackerSync<CR><CMD>TSUpdate<CR>') -- Update everything
 -- ] Utility keymaps
 
 -- [ Backup
@@ -74,14 +87,16 @@ local startup = function(use)
 
   -- Themes & Visuals
   use { 'sainnhe/everforest' , as = 'everforest' }
+  use "EdenEast/nightfox.nvim"
 
   -- Code & IDEA
   use 'neovim/nvim-lspconfig'               -- Configuration for NVIM Language Server Protocol Client
   use 'j-hui/fidget.nvim'                   -- Language Server Protocol status bar
-  use 'nvim-treesitter/nvim-treesitter'     -- Better syntax highlighting & other features, use :TSInstall <language> & :TSUpdate
   use 'lukas-reineke/indent-blankline.nvim' -- Add virtual lines to indentation
   use 'nvim-lualine/lualine.nvim'           -- Status line
+  use 'jeffkreeftmeijer/vim-numbertoggle'   -- Toggle number lines option automatically
   use 'folke/todo-comments.nvim'            -- Todo comments features
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' } -- Fast syntax-tree parse & highlighter
 
   -- Autocompletion plugins for the LSP
   use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
@@ -104,6 +119,11 @@ local startup = function(use)
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then packer.sync() end
 
+  vim.g.everforest_background = 'hard'
+  vim.g.everforest_better_performance = 1
+  vim.g.everforest_colors_override = {
+    bg0 = { '#141414', '243' },
+  }
   vim.cmd.colorscheme("everforest")
 
   -- LSP Mappings
@@ -135,7 +155,7 @@ local startup = function(use)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
     vim.keymap.set('n', 'gs', vim.lsp.buf.type_definition, bufopts)
 
-    -- Autocompletion mappings
+    -- Autocompletion mapping
     local luasnip = require('luasnip')
     local cmp = require('cmp')
     cmp.setup {
@@ -229,13 +249,14 @@ local startup = function(use)
 
   -- Treesitter configuration
   require('nvim-treesitter.configs').setup { 
-    ensure_installed = { "julia" },
+    ensure_installed = { "help", "julia", "lua", "typescript", "java", "scala", "c", "python" },
     auto_install = true,
     highlight = { enable = true },
+    additional_vim_regex_highlighting = false
  }
 
   -- Status line configuration
-  require('lualine').setup {}
+  require('lualine').setup { }
 
   -- TODO comments plugin configuration
   require("todo-comments").setup {}

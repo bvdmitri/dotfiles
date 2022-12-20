@@ -19,6 +19,16 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<C-l>a', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<C-l>f', vim.lsp.buf.format, bufopts)
 
+  local diagnostics_active = true
+  vim.keymap.set('n', '<C-l>d', function()
+    diagnostics_active = not diagnostics_active
+    if diagnostics_active then
+      vim.diagnostic.show()
+    else
+      vim.diagnostic.hide()
+    end
+  end)
+
   -- Override neovim built-in mappings for help
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)

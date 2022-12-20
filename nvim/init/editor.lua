@@ -27,9 +27,6 @@ vim.opt.wildmode = { "longest", "list" }
 -- Saves more commands in history
 vim.opt.history = 1000
 
--- Enable 24-bit RGB color in the UI
-vim.opt.termguicolors = true
-
 -- Highlight the line of the cursor
 vim.opt.cursorline = true
 

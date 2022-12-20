@@ -1,14 +1,16 @@
+local configpath = vim.fn.stdpath('config')
+
 -- All general settings & options are stored in the `init/editor`
-require "init/editor"
+dofile(configpath .. "/init/editor.lua")
 
 -- netrw plugin options are stored in the `init/netrw`
-require "init/netrw"
+dofile(configpath .. "/init/netrw.lua")
 
 -- Extra keymaps are stored in the `init/keymaps`
-require "init/keymaps"
+dofile(configpath .. "/init/keymaps.lua")
 
 -- Colorscheme & theme settings are stored in the `init/colorscheme`
-require "init/colorscheme"
+dofile(configpath .. "/init/colorscheme.lua")
 
 -- Two procedures below are computing the current working 
 -- directory with the full absolute path (`pwd`) and 
@@ -49,6 +51,7 @@ local startup = function(use)
 
   ----------------- Themes & Visuals -----------------
   use { 'sainnhe/everforest' , as = 'everforest' }
+  use { 'morhetz/gruvbox' , as = 'gruvbox' }
 
   ----------------- Code & IDEA ----------------------
   use 'neovim/nvim-lspconfig'                          -- Configuration for Language Server Protocol Client
@@ -75,10 +78,10 @@ local startup = function(use)
   if packer_bootstrap then packer.sync() end
 
   ----------------- Plugin configuration -------------
-  require "init/plugins/lsp"
-  require "init/plugins/treesitter"
-  require "init/plugins/telescope"
-  require "init/plugins/floaterm"
+  dofile(configpath .. "/init/plugins/lsp.lua")
+  dofile(configpath .. "/init/plugins/treesitter.lua")
+  dofile(configpath .. "/init/plugins/telescope.lua")
+  dofile(configpath .. "/init/plugins/floaterm.lua")
 
   -- LSP real-time status configuration
   require('fidget').setup {

@@ -86,6 +86,13 @@ end
 
 local lspconfig = require('lspconfig')
 
+------------------- Scala LS settings -----------------
+lspconfig.metals.setup {}
+
+------------------- Typescript LS settings ------------
+-- requires npm install -g typescript typescript-language-server
+lspconfig.tsserver.setup {}
+
 ------------------- Julia LS settings -----------------
 lspconfig.julials.setup {
   on_attach = on_attach,
@@ -93,7 +100,7 @@ lspconfig.julials.setup {
 }
 
 ------------------- Latex LS settings -----------------
-vim.b.texlabwd = string.format("/tmp/tectonic-latex/%s", vim.b.wd) 
+vim.b.texlabwd = string.format("/tmp/texlab-latex/%s", vim.b.wd) 
 
 -- Create texlab working directory if it does not exist
 os.execute(string.format("mkdir -p %s", vim.b.texlabwd))
@@ -104,8 +111,10 @@ lspconfig.texlab.setup {
     texlab = {
       auxDirectory = vim.b.texlabwd,
       build = {
-        executable = "tectonic",
-        args = {  "-X", "compile", "%f", "-p", "--synctex", "--keep-logs", "--keep-intermediates", "--outdir", vim.b.texlabwd },
+        -- executable = "tectonic",
+        -- args = {  "-X", "compile", "%f", "-p", "--synctex", "--keep-logs", "--keep-intermediates", "--outdir", vim.b.texlabwd },
+        executable = "latexmk",
+        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "-lualatex", string.format("-outdir=%s", vim.b.texlabwd), "%f" },
         onSave = true,
       },
       forwardSearch = {

@@ -65,6 +65,7 @@ local startup = function(use)
   use { 'nvim-telescope/telescope.nvim', tag = '0.1.0' }  -- File finder, requires `ripgrep` & `df` commands. 
   use 'nvim-telescope/telescope-fzf-native.nvim'          -- Install via `brew install ripgrep` & `brew install fd`
   use 'voldikss/vim-floaterm'                          -- Plugin for floating terminals
+  use 'scalameta/nvim-metals'                          -- Standalone plugin for Scala LSP
 
   ----------------- Autocompletion -------------------
   use 'hrsh7th/nvim-cmp'                               -- Autocompletion plugin

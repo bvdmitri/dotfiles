@@ -1,3 +1,9 @@
+-- Remove arrows for now
+vim.keymap.set('n', '<Up>', '<Nop>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Down>', '<Nop>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Left>', '<Nop>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Right>', '<Nop>', { noremap = true, silent = true })
+
 -- Toggle search highlithing
 vim.keymap.set('n', '<Leader>th', '<CMD>set hlsearch!<CR>')
 

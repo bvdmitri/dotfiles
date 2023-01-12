@@ -1,32 +1,3 @@
-local configpath = vim.fn.stdpath('config')
-
--- All general settings & options are stored in the `init/editor`
-dofile(configpath .. "/init/editor.lua")
-
--- netrw plugin options are stored in the `init/netrw`
-dofile(configpath .. "/init/netrw.lua")
-
--- Extra keymaps are stored in the `init/keymaps`
-dofile(configpath .. "/init/keymaps.lua")
-
--- Colorscheme & theme settings are stored in the `init/colorscheme`
-dofile(configpath .. "/init/colorscheme.lua")
-
--- Two procedures below are computing the current working 
--- directory with the full absolute path (`pwd`) and 
--- with only the folder name (`wd`). I'm pretty much sure 
--- there is an easier way to achieve the same...
-
--- Read the current directory's path
-local pwdhandle = io.popen("pwd")
-vim.b.pwd = pwdhandle:read()
-pwdhandle:close()
-
--- Get the basename of the current directory's path
-local wdhandle = io.popen(string.format("basename %s", vim.b.pwd))
-vim.b.wd = wdhandle:read()
-wdhandle:close()
-
 -- Packer bootstrap
 -- As far as I can tell (the function below is copypated from the internet)
 -- the procedure simply checks if the `packer` has been installed or not
@@ -45,7 +16,25 @@ end
 local packer_bootstrap = ensure_packer()
 local packer = require('packer')
 
+-- Two procedures below are computing the current working 
+-- directory with the full absolute path (`pwd`) and 
+-- with only the folder name (`wd`). I'm pretty much sure 
+-- there is an easier way to achieve the same...
+
+-- Read the current directory's path
+local pwdhandle = io.popen("pwd")
+vim.b.pwd = pwdhandle:read()
+pwdhandle:close()
+
+-- Get the basename of the current directory's path
+local wdhandle = io.popen(string.format("basename %s", vim.b.pwd))
+vim.b.wd = wdhandle:read()
+wdhandle:close()
+
 local startup = function(use)
+
+  local configpath = vim.fn.stdpath('config')
+  
   use 'wbthomason/packer.nvim'  -- The boss of all packages
   use 'nvim-lua/plenary.nvim'   -- Meta package with useful Lua functions 
 
@@ -77,6 +66,18 @@ local startup = function(use)
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then packer.sync() end
+
+  -- All general settings & options are stored in the `init/editor`
+  dofile(configpath .. "/init/editor.lua")
+  
+  -- netrw plugin options are stored in the `init/netrw`
+  dofile(configpath .. "/init/netrw.lua")
+  
+  -- Extra keymaps are stored in the `init/keymaps`
+  dofile(configpath .. "/init/keymaps.lua")
+  
+  -- Colorscheme & theme settings are stored in the `init/colorscheme`
+  dofile(configpath .. "/init/colorscheme.lua")
 
   ----------------- Plugin configuration -------------
   dofile(configpath .. "/init/plugins/lsp.lua")

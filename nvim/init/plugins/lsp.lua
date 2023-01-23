@@ -93,6 +93,9 @@ lspconfig.metals.setup {}
 -- requires npm install -g typescript typescript-language-server
 lspconfig.tsserver.setup {}
 
+------------------- Clang LS settings -----------------
+lspconfig.clangd.setup {}
+
 ------------------- Julia LS settings -----------------
 lspconfig.julials.setup {
   on_attach = on_attach,

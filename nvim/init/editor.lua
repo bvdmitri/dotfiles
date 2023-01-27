@@ -48,6 +48,9 @@ vim.opt.writebackup = true
 -- Autoreload files automatically
 vim.opt.autoread = true 
 
+-- Add new file extensions for the `gf` command
+vim.opt.suffixesadd:append { ".tex", ".jl", ".js", ".ts" }
+
 -- Show invisible symbols
 -- vim.opt.list = true
 

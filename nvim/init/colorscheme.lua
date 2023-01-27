@@ -12,4 +12,10 @@ vim.g.everforest_colors_override = {
 -- Grubvox theme configuration
 -- vim.g.gruvbox_contrast_dark = 'hard'
 
-vim.cmd.colorscheme 'everforest'
+-- Sonokai theme configuration
+vim.g.sonokai_style = 'espresso'
+vim.g.sonokai_enable_italic = 0
+vim.g.sonokai_better_performance = 1
+
+
+vim.cmd.colorscheme 'sonokai'

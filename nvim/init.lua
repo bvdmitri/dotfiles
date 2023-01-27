@@ -41,6 +41,7 @@ local startup = function(use)
   ----------------- Themes & Visuals -----------------
   use { 'sainnhe/everforest' , as = 'everforest' }
   use { 'morhetz/gruvbox' , as = 'gruvbox' }
+  use { 'sainnhe/sonokai', as = 'sonokai' }
 
   ----------------- Code & IDEA ----------------------
   use 'neovim/nvim-lspconfig'                          -- Configuration for Language Server Protocol Client
@@ -53,6 +54,7 @@ local startup = function(use)
   use 'nvim-tree/nvim-web-devicons'                    -- Dev icons (`brew install --cask font-hack-nerd-font`)
   use { 'nvim-telescope/telescope.nvim', tag = '0.1.0' }  -- File finder, requires `ripgrep` & `df` commands. 
   use 'nvim-telescope/telescope-fzf-native.nvim'          -- Install via `brew install ripgrep` & `brew install fd`
+  use 'kylechui/nvim-surround'                         -- Plugin for convenient brackets
   use 'voldikss/vim-floaterm'                          -- Plugin for floating terminals
   use 'scalameta/nvim-metals'                          -- Standalone plugin for Scala LSP
 
@@ -92,8 +94,11 @@ local startup = function(use)
     }
   }
   
-  require('lualine').setup {}       -- Status line configuration
-  require("todo-comments").setup {} -- TODO comments plugin configuration
+  require('lualine').setup {        -- Status line configuration
+    options = { theme = 'sonokai' }
+  }
+  require('todo-comments').setup {} -- TODO comments plugin configuration
+  require('nvim-surround').setup {} -- Convenient brackets configuration
 
 end
 

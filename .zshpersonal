@@ -1,0 +1,26 @@
+
+export VISUAL=nvim
+
+alias v=nvim
+alias vi=nvim
+alias vim=nvim
+
+export NVM_DIR="$HOME/.nvm"
+
+function nvm() {
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    echo "NVM has been lazy loaded in the current session, please run the command again."
+}
+
+export SDKMAN_DIR="$HOME/.sdkman"
+
+function sdk() {
+    #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+    echo "SDK has been lazy loaded in the current session, please run the command again."
+}
+
+if [ -n "$VIMRUNTIME" ]; then 
+    export PS1="$PS1%{(vim)%{:%{"
+fi

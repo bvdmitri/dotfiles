@@ -4,7 +4,7 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<Leader>df', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+vim.keymap.set('n', '<Leader>ll', vim.diagnostic.setloclist, opts)
 
 -- The `on_attach` function is used to only map the following keys 
 -- after the language server attaches to the current buffer

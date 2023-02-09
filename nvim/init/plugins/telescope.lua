@@ -18,6 +18,7 @@ vim.keymap.set('n', '<space>b', function() telescope.buffers(opt) end)
 vim.keymap.set('n', '<space>m', function() telescope.marks(opt) end)
 vim.keymap.set('n', '<space>c', function() telescope.commands(opt) end)
 vim.keymap.set('n', '<space>q', function() telescope.quickfix(opt) end)
+vim.keymap.set('n', '<space>l', function() telescope.loclist(opt) end)
 vim.keymap.set('n', '<space>r', function() telescope.registers(opt) end)
 vim.keymap.set('n', '<space>d', function() telescope.diagnostics(opt) end)
 

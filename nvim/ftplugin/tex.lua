@@ -12,7 +12,7 @@ vim.opt.expandtab = true  -- In Insert mode: Use the appropriate number of space
 
 vim.opt.wrap = true  -- Wrap long sentences
 vim.opt.spell = true -- Enable spell checking
-vim.opt.spelllang = { "en_us", "nl", "ru" }
+vim.opt.spelllang = { "en_us" }
 -- Set extra keymaps for the latex extension
 local keyconfig = { noremap = true, silent = true }
 vim.keymap.set('n', '<C-l>b', '<CMD>TexlabBuild<CR>', keyconfig)     -- Build on Ctrl-L b

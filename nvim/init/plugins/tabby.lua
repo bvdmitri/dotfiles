@@ -1,6 +1,18 @@
 
 vim.o.showtabline = 2
 
+local opt = { noremap = true, silent = true }
+
+vim.keymap.set('n', '<M-1>', '1gt', opt)
+vim.keymap.set('n', '<M-2>', '2gt', opt)
+vim.keymap.set('n', '<M-3>', '3gt', opt)
+vim.keymap.set('n', '<M-4>', '4gt', opt)
+vim.keymap.set('n', '<M-5>', '5gt', opt)
+vim.keymap.set('n', '<M-6>', '6gt', opt)
+vim.keymap.set('n', '<M-7>', '7gt', opt)
+vim.keymap.set('n', '<M-8>', '8gt', opt)
+vim.keymap.set('n', '<M-9>', '9gt', opt)
+
 local tabby = require('tabby.tabline')
 
 local function tab_name(tab) 

@@ -1,6 +1,3 @@
--- Setup VISUAL
-vim.fn.setenv("VISUAL", "nvr -cc split --remote-wait +'set bufhidden=wipe'")
-
 -- Packer bootstrap
 -- As far as I can tell (the function below is copypated from the internet)
 -- the procedure simply checks if the `packer` has been installed or not

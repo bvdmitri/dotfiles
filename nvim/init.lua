@@ -42,6 +42,7 @@ local startup = function(use)
   use { 'sainnhe/everforest' , as = 'everforest' }
   use { 'morhetz/gruvbox' , as = 'gruvbox' }
   use { 'sainnhe/sonokai', as = 'sonokai' }
+  use { 'sunjon/shade.nvim' }
 
   ----------------- Code & IDEA ----------------------
   use 'neovim/nvim-lspconfig'                          -- Configuration for Language Server Protocol Client
@@ -60,6 +61,7 @@ local startup = function(use)
   use 'scalameta/nvim-metals'                          -- Standalone plugin for Scala LSP
   use 'rgroli/other.nvim'                              -- Plugin to open alternate files (context dependent)
   use 'nanozuki/tabby.nvim'                            -- Plugin for better tabline
+  use 'ellisonleao/glow.nvim'                          -- Plugin for markdown preview, requires `brew install glow`
 
   ----------------- Autocompletion -------------------
   use 'hrsh7th/nvim-cmp'                               -- Autocompletion plugin
@@ -103,9 +105,15 @@ local startup = function(use)
   require('lualine').setup {        -- Status line configuration
     options = { theme = 'sonokai' }
   }
+
+  require('shade').setup {          -- Dim inactive windows
+    overlay_opacity = 50,
+    keys = { toggle = '<Leader>s' }
+  }
+
   require('todo-comments').setup {} -- TODO comments plugin configuration
   require('nvim-surround').setup {} -- Convenient brackets configuration
-
+  require('glow').setup {}          -- Markdown preview
 end
 
 return packer.startup(startup)

@@ -99,6 +99,11 @@ _G.packer_plugins = {
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/fidget.nvim",
     url = "https://github.com/j-hui/fidget.nvim"
   },
+  ["glow.nvim"] = {
+    loaded = true,
+    path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/glow.nvim",
+    url = "https://github.com/ellisonleao/glow.nvim"
+  },
   gruvbox = {
     loaded = true,
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/gruvbox",
@@ -163,6 +168,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
+  },
+  ["shade.nvim"] = {
+    loaded = true,
+    path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/shade.nvim",
+    url = "https://github.com/sunjon/shade.nvim"
   },
   sonokai = {
     loaded = true,

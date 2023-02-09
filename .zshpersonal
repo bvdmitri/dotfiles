@@ -24,8 +24,8 @@ function sdk() {
 if [ -n "$VIMRUNTIME" ]; then 
     export PS1="$PS1%{(vim)%{:%{ "
     export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-    alias v=nvr
-    alias vi=nvr
-    alias vim=nvr
-    alias nvim=nvr
+    alias v='echo "Nested NVIM sessions are not allowed"'
+    alias vi='echo "Nested NVIM sessions are not allowed"'
+    alias vim='echo "Nested NVIM sessions are not allowed"'
+    alias nvim='echo "Nested NVIM sessions are not allowed"'
 fi

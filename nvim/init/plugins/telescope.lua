@@ -21,6 +21,7 @@ vim.keymap.set('n', '<space>q', function() telescope.quickfix(opt) end)
 vim.keymap.set('n', '<space>l', function() telescope.loclist(opt) end)
 vim.keymap.set('n', '<space>r', function() telescope.registers(opt) end)
 vim.keymap.set('n', '<space>d', function() telescope.diagnostics(opt) end)
+vim.keymap.set('n', '<space>H', function() telescope.colorscheme(opt) end)
 
 -- LSP pickers
 vim.keymap.set('n', '<space>R', function() telescope.lsp_references(opt) end)

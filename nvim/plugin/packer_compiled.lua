@@ -169,6 +169,11 @@ _G.packer_plugins = {
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/sonokai",
     url = "https://github.com/sainnhe/sonokai"
   },
+  ["tabby.nvim"] = {
+    loaded = true,
+    path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/tabby.nvim",
+    url = "https://github.com/nanozuki/tabby.nvim"
+  },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",

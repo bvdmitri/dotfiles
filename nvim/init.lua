@@ -59,6 +59,7 @@ local startup = function(use)
   use 'voldikss/vim-floaterm'                          -- Plugin for floating terminals
   use 'scalameta/nvim-metals'                          -- Standalone plugin for Scala LSP
   use 'rgroli/other.nvim'                              -- Plugin to open alternate files (context dependent)
+  use 'nanozuki/tabby.nvim'                            -- Plugin for better tabline
 
   ----------------- Autocompletion -------------------
   use 'hrsh7th/nvim-cmp'                               -- Autocompletion plugin
@@ -90,6 +91,7 @@ local startup = function(use)
   dofile(configpath .. "/init/plugins/floaterm.lua")
   dofile(configpath .. "/init/plugins/other.lua")
   dofile(configpath .. "/init/plugins/tree.lua")
+  dofile(configpath .. "/init/plugins/tabby.lua")
 
   -- LSP real-time status configuration
   require('fidget').setup {

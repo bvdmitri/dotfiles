@@ -144,6 +144,11 @@ _G.packer_plugins = {
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/nvim-tree/nvim-web-devicons"
   },
+  ["other.nvim"] = {
+    loaded = true,
+    path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/other.nvim",
+    url = "https://github.com/rgroli/other.nvim"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/packer.nvim",

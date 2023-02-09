@@ -19,3 +19,8 @@ vim.g.sonokai_better_performance = 1
 
 
 vim.cmd.colorscheme 'sonokai'
+
+-- Show terminal cursor explicitly
+vim.cmd.highlight({ "link", "TermCursor", "Cursor" })
+vim.cmd.highlight({ "TermCursorNC", "guibg=orange", "guifg=white", "ctermbg=1", "ctermfg=15" })
+

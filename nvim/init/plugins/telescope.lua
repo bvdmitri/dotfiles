@@ -5,7 +5,7 @@ local telescope = require('telescope.builtin')
 
 local opt = { 
     layout_strategy = 'vertical', 
-    layout_config = { width = 0.95 }, 
+    layout_config = { width = 0.80 }, 
     wrap_results = true 
 }
 

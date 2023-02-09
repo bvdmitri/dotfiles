@@ -1,5 +1,5 @@
 
-export VISUAL=nvr
+export VISUAL=nvim
 
 alias v=nvim
 alias vi=nvim
@@ -23,6 +23,7 @@ function sdk() {
 
 if [ -n "$VIMRUNTIME" ]; then 
     export PS1="$PS1%{(vim)%{:%{"
+    export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
     alias v=nvr
     alias vi=nvr
     alias vim=nvr

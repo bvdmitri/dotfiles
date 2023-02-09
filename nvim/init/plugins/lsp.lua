@@ -103,6 +103,7 @@ lspconfig.julials.setup {
 }
 
 ------------------- Latex LS settings -----------------
+-- requires brew install --cask mactex & the Skim application
 vim.b.texlabwd = string.format("/tmp/texlab-latex/%s", vim.b.wd) 
 
 -- Create texlab working directory if it does not exist

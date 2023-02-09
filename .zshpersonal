@@ -1,5 +1,5 @@
 
-export VISUAL=nvim
+export VISUAL=nvr
 
 alias v=nvim
 alias vi=nvim
@@ -23,4 +23,8 @@ function sdk() {
 
 if [ -n "$VIMRUNTIME" ]; then 
     export PS1="$PS1%{(vim)%{:%{"
+    alias v=nvr
+    alias vi=nvr
+    alias vim=nvr
+    alias nvim=nvr
 fi

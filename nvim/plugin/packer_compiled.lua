@@ -169,11 +169,6 @@ _G.packer_plugins = {
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
-  ["shade.nvim"] = {
-    loaded = true,
-    path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/shade.nvim",
-    url = "https://github.com/sunjon/shade.nvim"
-  },
   sonokai = {
     loaded = true,
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/sonokai",
@@ -193,6 +188,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["tint.nvim"] = {
+    loaded = true,
+    path = "/Users/bvdmitri/.local/share/nvim/site/pack/packer/start/tint.nvim",
+    url = "https://github.com/levouh/tint.nvim"
   },
   ["todo-comments.nvim"] = {
     loaded = true,

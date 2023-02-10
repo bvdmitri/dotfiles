@@ -38,11 +38,15 @@ local startup = function(use)
   use 'wbthomason/packer.nvim'  -- The boss of all packages
   use 'nvim-lua/plenary.nvim'   -- Meta package with useful Lua functions 
 
+  -- The collection of plugins I know about, but not sure I need it yet
+  -- 1. tabout - https://github.com/abecodes/tabout.nvim
+  -- 2. enwise - https://github.com/mapkts/enwise
+
   ----------------- Themes & Visuals -----------------
   use { 'sainnhe/everforest' , as = 'everforest' }
   use { 'morhetz/gruvbox' , as = 'gruvbox' }
   use { 'sainnhe/sonokai', as = 'sonokai' }
-  use { 'sunjon/shade.nvim' }
+  use { 'sunjon/shade.nvim' }                          -- Dim inactive windows
 
   ----------------- Code & IDEA ----------------------
   use 'neovim/nvim-lspconfig'                          -- Configuration for Language Server Protocol Client
@@ -86,7 +90,7 @@ local startup = function(use)
   -- Colorscheme & theme settings are stored in the `init/colorscheme`
   dofile(configpath .. "/init/colorscheme.lua")
 
-  ----------------- Plugin configuration -------------
+  ----------------- Plugins configuration ------------
   dofile(configpath .. "/init/plugins/lsp.lua")
   dofile(configpath .. "/init/plugins/treesitter.lua")
   dofile(configpath .. "/init/plugins/telescope.lua")

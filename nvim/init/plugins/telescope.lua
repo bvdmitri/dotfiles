@@ -9,6 +9,8 @@ local opt = {
     wrap_results = true 
 }
 
+local optconfig = vim.tbl_deep_extend("keep", opt, { cwd = vim.fn.stdpath('config') })
+
 -- Builtin pickers
 vim.keymap.set('n', '<space>f', function() telescope.git_files(opt) end)
 vim.keymap.set('n', '<space>F', function() telescope.find_files(opt) end)
@@ -22,6 +24,8 @@ vim.keymap.set('n', '<space>l', function() telescope.loclist(opt) end)
 vim.keymap.set('n', '<space>r', function() telescope.registers(opt) end)
 vim.keymap.set('n', '<space>d', function() telescope.diagnostics(opt) end)
 vim.keymap.set('n', '<space>H', function() telescope.colorscheme(opt) end)
+
+vim.keymap.set('n', '<space>V', function() telescope.find_files(optconfig) end)
 
 -- LSP pickers
 vim.keymap.set('n', '<space>R', function() telescope.lsp_references(opt) end)

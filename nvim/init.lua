@@ -34,6 +34,8 @@ wdhandle:close()
 local startup = function(use)
 
   local configpath = vim.fn.stdpath('config')
+
+  vim.opt.path:append { configpath }
   
   use 'wbthomason/packer.nvim'  -- The boss of all packages
   use 'nvim-lua/plenary.nvim'   -- Meta package with useful Lua functions 
@@ -58,7 +60,7 @@ local startup = function(use)
   use 'nvim-treesitter/nvim-treesitter'                -- Fast syntax-tree parse & highlighter
   use 'nvim-tree/nvim-web-devicons'                    -- Dev icons (`brew install --cask font-hack-nerd-font`)
   use { 'nvim-telescope/telescope.nvim', tag = '0.1.0' }  -- File finder, requires `ripgrep` & `df` commands. 
-  use 'nvim-telescope/telescope-fzf-native.nvim'          -- Install via `brew install ripgrep` & `brew install fd`
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = "make" } -- Install via `brew install ripgrep` & `brew install fd` & `brew install fzf`
   use 'nvim-tree/nvim-tree.lua'                        -- File/folder/trees manager
   use 'kylechui/nvim-surround'                         -- Plugin for convenient brackets
   use 'voldikss/vim-floaterm'                          -- Plugin for floating terminals

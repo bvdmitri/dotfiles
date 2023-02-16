@@ -37,7 +37,7 @@ vim.opt.cursorlineopt = 'number'
 vim.opt.updatetime = 1000
 
 -- Hightlight the 120th column
-vim.opt.colorcolumn = '120'
+vim.opt.colorcolumn = '100'
 
 -- Make a backup before overwriting a file and keep the backup
 vim.opt.backup = false

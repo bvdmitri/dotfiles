@@ -105,12 +105,14 @@ lspconfig.julials.setup {
 ------------------- Latex LS settings -----------------
 -- requires brew install --cask mactex & the Skim application
 vim.b.texlabwd = string.format("/tmp/texlab-latex/%s", vim.b.wd) 
+vim.b.texlab_latexindent_config = string.format("%s/latexindent.yaml", vim.b.pwd)
 
 -- Create texlab working directory if it does not exist
 os.execute(string.format("mkdir -p %s", vim.b.texlabwd))
 
 lspconfig.texlab.setup {
   on_attach = on_attach,
+  log_level = vim.lsp.protocol.MessageType.Log,
   settings = {
     texlab = {
       auxDirectory = vim.b.texlabwd,
@@ -118,7 +120,7 @@ lspconfig.texlab.setup {
         -- executable = "tectonic",
         -- args = {  "-X", "compile", "%f", "-p", "--synctex", "--keep-logs", "--keep-intermediates", "--outdir", vim.b.texlabwd },
         executable = "latexmk",
-        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "-lualatex", string.format("-outdir=%s", vim.b.texlabwd), "%f" },
+        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", string.format("-outdir=%s", vim.b.texlabwd), "%f" },
         onSave = true,
       },
       forwardSearch = {
@@ -126,6 +128,7 @@ lspconfig.texlab.setup {
         args = { "%l", "%p", "%f" }
       },
       latexindent = {
+        ['local'] = vim.b.texlab_latexindent_config,
         modifyLineBreaks = true
       }
     }

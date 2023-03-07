@@ -68,6 +68,7 @@ local startup = function(use)
   use 'rgroli/other.nvim'                              -- Plugin to open alternate files (context dependent)
   use 'nanozuki/tabby.nvim'                            -- Plugin for better tabline
   use 'ellisonleao/glow.nvim'                          -- Plugin for markdown preview, requires `brew install glow`
+  use 'preservim/nerdcommenter'                        -- Plugin for commenting stuff
 
   ----------------- Autocompletion -------------------
   use 'hrsh7th/nvim-cmp'                               -- Autocompletion plugin

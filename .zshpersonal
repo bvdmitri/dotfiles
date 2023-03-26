@@ -1,5 +1,6 @@
 
 export VISUAL=nvim
+export PATH="/Users/bvdmitri/.local/bin:$PATH"
 
 alias v=nvim
 alias vi=nvim

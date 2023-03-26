@@ -85,6 +85,7 @@ local on_attach = function(client, bufnr)
 end
 
 local lspconfig = require('lspconfig')
+local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 ------------------- Scala LS settings -----------------
 lspconfig.metals.setup {}
@@ -99,39 +100,41 @@ lspconfig.clangd.setup {}
 ------------------- Julia LS settings -----------------
 lspconfig.julials.setup {
   on_attach = on_attach,
-  capabilities = autocomplete
+  capabilities = lsp_capabilities
 }
 
 ------------------- Latex LS settings -----------------
 -- requires brew install --cask mactex & the Skim application
-vim.b.texlabwd = string.format("/tmp/texlab-latex/%s", vim.b.wd) 
-vim.b.texlab_latexindent_config = string.format("%s/latexindent.yaml", vim.b.pwd)
+vim.g.texlabwd = string.format("/tmp/texlab-latex/%s", vim.g.wd) 
+vim.g.texlab_latexindent_config = string.format("%s/latexindent.yaml", vim.g.pwd)
 
 -- Create texlab working directory if it does not exist
-os.execute(string.format("mkdir -p %s", vim.b.texlabwd))
+os.execute(string.format("mkdir -p %s", vim.g.texlabwd))
 
 lspconfig.texlab.setup {
   on_attach = on_attach,
   log_level = vim.lsp.protocol.MessageType.Log,
+  cmd = { "texlab", "-vvvv", "--log-file=/tmp/texlab.log" },
   settings = {
     texlab = {
-      auxDirectory = vim.b.texlabwd,
+      auxDirectory = vim.g.texlabwd,
       build = {
         -- executable = "tectonic",
         -- args = {  "-X", "compile", "%f", "-p", "--synctex", "--keep-logs", "--keep-intermediates", "--outdir", vim.b.texlabwd },
         executable = "latexmk",
-        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", string.format("-outdir=%s", vim.b.texlabwd), "%f" },
+        args = { "-pdf", "-f", "-interaction=nonstopmode", "-synctex=1", string.format("-outdir=%s", vim.g.texlabwd), "%f" },
         onSave = true,
       },
       forwardSearch = {
         executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
         args = { "%l", "%p", "%f" }
       },
+      latexFormatter = "latexindent",
       latexindent = {
-        ['local'] = vim.b.texlab_latexindent_config,
+        ['local'] = vim.g.texlab_latexindent_config,
         modifyLineBreaks = true
       }
     }
   },
-  capabilities = autocomplete
+  capabilities = lsp_capabilities
 }

@@ -23,12 +23,12 @@ local packer = require('packer')
 
 -- Read the current directory's path
 local pwdhandle = io.popen("pwd")
-vim.b.pwd = pwdhandle:read()
+vim.g.pwd = pwdhandle:read()
 pwdhandle:close()
 
 -- Get the basename of the current directory's path
-local wdhandle = io.popen(string.format("basename %s", vim.b.pwd))
-vim.b.wd = wdhandle:read()
+local wdhandle = io.popen(string.format("basename %s", vim.g.pwd))
+vim.g.wd = wdhandle:read()
 wdhandle:close()
 
 local startup = function(use)
@@ -75,8 +75,6 @@ local startup = function(use)
   use 'hrsh7th/cmp-nvim-lsp'                           -- LSP source for nvim-cmp
   use 'saadparwaiz1/cmp_luasnip'                       -- Snippets source for nvim-cmp
   use 'L3MON4D3/LuaSnip'                               -- Snippets plugin
-
-  local autocomplete = require("cmp_nvim_lsp").default_capabilities()
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then packer.sync() end

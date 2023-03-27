@@ -88,14 +88,23 @@ local lspconfig = require('lspconfig')
 local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 ------------------- Scala LS settings -----------------
-lspconfig.metals.setup {}
+lspconfig.metals.setup {
+  on_attach = on_attach,
+  capabilities = lsp_capabilities
+}
 
 ------------------- Typescript LS settings ------------
 -- requires npm install -g typescript typescript-language-server
-lspconfig.tsserver.setup {}
+lspconfig.tsserver.setup {
+  on_attach = on_attach,
+  capabilities = lsp_capabilities
+}
 
 ------------------- Clang LS settings -----------------
-lspconfig.clangd.setup {}
+lspconfig.clangd.setup {
+  on_attach = on_attach,
+  capabilities = lsp_capabilities
+}
 
 ------------------- Julia LS settings -----------------
 lspconfig.julials.setup {

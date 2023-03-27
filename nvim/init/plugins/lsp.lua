@@ -1,11 +1,4 @@
 
-local opts = { noremap = true, silent = true }
-
-vim.keymap.set('n', '<Leader>df', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<Leader>ll', vim.diagnostic.setloclist, opts)
-
 -- The `on_attach` function is used to only map the following keys 
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -18,6 +11,12 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<C-l>r', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<C-l>a', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<C-l>f', vim.lsp.buf.format, bufopts)
+
+  -- Diagnostics related commands
+  vim.keymap.set('n', '<C-l>l', vim.diagnostic.setloclist, bufopts)
+  vim.keymap.set('n', '<C-l>o', vim.diagnostic.open_float, opts)
+  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 
   local diagnostics_active = true
   vim.keymap.set('n', '<C-l>d', function()

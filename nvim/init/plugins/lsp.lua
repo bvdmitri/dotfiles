@@ -132,10 +132,14 @@ lspconfig.texlab.setup {
         executable = "latexmk",
         args = { "-pdf", "-f", "-interaction=nonstopmode", "-synctex=1", string.format("-outdir=%s", vim.g.texlabwd), "%f" },
         onSave = true,
+        forwardSearchAfter = true
+      },
+      chktex = {
+        onOpenAndSave = true
       },
       forwardSearch = {
         executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
-        args = { "%l", "%p", "%f" }
+        args = { "-g", "%l", "%p", "%f" }
       },
       latexFormatter = "latexindent",
       latexindent = {

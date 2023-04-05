@@ -22,9 +22,9 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<C-l>d', function()
     diagnostics_active = not diagnostics_active
     if diagnostics_active then
-      vim.diagnostic.show()
+      vim.diagnostic.disable(bufnr)
     else
-      vim.diagnostic.hide()
+      vim.diagnostic.enable(bufnr)
     end
   end)
 

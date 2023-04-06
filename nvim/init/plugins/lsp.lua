@@ -122,7 +122,7 @@ os.execute(string.format("mkdir -p %s", vim.g.texlabwd))
 lspconfig.texlab.setup {
   on_attach = on_attach,
   log_level = vim.lsp.protocol.MessageType.Log,
-  cmd = { "texlab", "-vvvv", "--log-file=/tmp/texlab.log" },
+  -- cmd = { "texlab", "-vvvv", "--log-file=/tmp/texlab.log" },
   settings = {
     texlab = {
       auxDirectory = vim.g.texlabwd,

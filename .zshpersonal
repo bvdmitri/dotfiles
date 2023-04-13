@@ -1,11 +1,17 @@
 
 export VISUAL=nvim
-export PATH="/Users/bvdmitri/.local/bin:$PATH"
+export VIMCONFIG=~/.config/nvim
+export VIMDATA=~/.local/share/nvim
+export PATH="${HOME}/.local/bin:$PATH"
+
+test -e "${HOME}/.miniconda3" && export PATH="${HOME}/.miniconda3/bin:$PATH"
 
 alias v=nvim
 alias vi=nvim
 alias vim=nvim
 alias j=jump
+
+alias nlspjuliaup="julia --project=~/.julia/environments/nvim-lspconfig -e 'using Pkg; Pkg.update()'"
 
 export NVM_DIR="$HOME/.nvm"
 
@@ -37,3 +43,6 @@ if [ -n "$VIMRUNTIME" ]; then
     alias vim='echo "Nested NVIM sessions are not allowed"'
     alias nvim='echo "Nested NVIM sessions are not allowed"'
 fi
+
+test -e "${HOME}/.docker/init-zsh.sh" && source "${HOME}/.docker/init-zsh.sh"
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

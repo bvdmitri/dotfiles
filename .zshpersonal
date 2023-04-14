@@ -4,8 +4,6 @@ export VIMCONFIG=~/.config/nvim
 export VIMDATA=~/.local/share/nvim
 export PATH="${HOME}/.local/bin:$PATH"
 
-test -e "${HOME}/.miniconda3" && export PATH="${HOME}/.miniconda3/bin:$PATH"
-
 alias v=nvim
 alias vi=nvim
 alias vim=nvim
@@ -15,11 +13,11 @@ alias nlspjuliaup="julia --project=~/.julia/environments/nvim-lspconfig -e 'usin
 
 export NVM_DIR="$HOME/.nvm"
 
-PATH="/Users/bvdmitri/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/Users/bvdmitri/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/Users/bvdmitri/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/Users/bvdmitri/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/bvdmitri/perl5"; export PERL_MM_OPT;
+PATH="${HOME}/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="${HOME}/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="${HOME}/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"${HOME}/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=${HOME}/perl5"; export PERL_MM_OPT;
 
 function nvm() {
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -27,11 +25,11 @@ function nvm() {
     echo "NVM has been lazy loaded in the current session, please run the command again."
 }
 
-export SDKMAN_DIR="$HOME/.sdkman"
+export SDKMAN_DIR="${HOME}/.sdkman"
 
 function sdk() {
     #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+    [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
     echo "SDK has been lazy loaded in the current session, please run the command again."
 }
 
@@ -46,3 +44,5 @@ fi
 
 test -e "${HOME}/.docker/init-zsh.sh" && source "${HOME}/.docker/init-zsh.sh"
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+test -e "${HOME}/.miniconda3" && export PATH="${HOME}/.miniconda3/bin:$PATH"
+

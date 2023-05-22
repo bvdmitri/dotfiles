@@ -132,7 +132,7 @@ lspconfig.texlab.setup {
         executable = "latexmk",
         args = { "-pdf", "-f", "-interaction=nonstopmode", "-synctex=1", string.format("-outdir=%s", vim.g.texlabwd), "%f" },
         onSave = true,
-        forwardSearchAfter = true
+        forwardSearchAfter = false
       },
       chktex = {
         onOpenAndSave = true

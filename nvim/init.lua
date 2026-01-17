@@ -1,123 +1,126 @@
--- Packer bootstrap
--- As far as I can tell (the function below is copypated from the internet)
--- the procedure simply checks if the `packer` has been installed or not
--- (and downloads it if needed)
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-    vim.cmd.packadd("packer.nvim")
-    return true
-  end
-  return false
-end
 
-local packer_bootstrap = ensure_packer()
-local packer = require('packer')
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.mouse = 'a'
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 2
+vim.o.expandtab = true
+vim.o.smarttab = true
+vim.o.splitright = true
+vim.o.splitbelow = true
+vim.o.signcolumn = "yes"
+vim.g.winborder = "rounded"
+vim.o.winwidth = 20
+vim.o.winheight = 10
+vim.o.winborder = "rounded"
+vim.o.winblend = 5
+vim.o.autocomplete = true
+vim.o.completeopt = 'fuzzy,menu,menuone,popup,noinsert'
+vim.o.pumborder = "rounded"
+vim.o.pumheight = 10
+vim.o.pummaxwidth = 45
+vim.o.pumblend = 15
 
--- Two procedures below are computing the current working 
--- directory with the full absolute path (`pwd`) and 
--- with only the folder name (`wd`). I'm pretty much sure 
--- there is an easier way to achieve the same...
+local gh = function(x) return 'https://github.com/' .. x end
 
--- Read the current directory's path
-local pwdhandle = io.popen("pwd")
-vim.g.pwd = pwdhandle:read()
-pwdhandle:close()
+vim.pack.add({
+  { src = gh('ibhagwan/fzf-lua') },
+  { src = gh('neovim/nvim-lspconfig') },
+  { src = gh('nvim-lualine/lualine.nvim') },
+  { src = gh('nvim-treesitter/nvim-treesitter') },
+  { src = gh('stevearc/oil.nvim') },
+  { src = gh('JezerM/oil-lsp-diagnostics.nvim') },
+  { src = gh('benomahony/oil-git.nvim') },
+  { src = gh('nvim-tree/nvim-web-devicons') },
+  { src = gh('sainnhe/sonokai'), name = "theme-sonokai" },
+  { src = gh('rebelot/kanagawa.nvim'), name = "theme-kanagawa" },
+})
 
--- Get the basename of the current directory's path
-local wdhandle = io.popen(string.format("basename %s", vim.g.pwd))
-vim.g.wd = wdhandle:read()
-wdhandle:close()
+-- I Like sonokai overall, but they use ugly black type of 
+-- WinSeparator, so I change it to light gray instead
+vim.g.sonokai_dim_inactive_windows = 1
+vim.cmd("colorscheme sonokai | hi WinSeparator guifg='NvimDarkGray4'")
 
-local startup = function(use)
+require('lualine').setup()
 
-  local configpath = vim.fn.stdpath('config')
+require('oil').setup()
+require('oil-lsp-diagnostics').setup()
 
-  vim.opt.path:append { configpath }
-  
-  use 'wbthomason/packer.nvim'  -- The boss of all packages
-  use 'nvim-lua/plenary.nvim'   -- Meta package with useful Lua functions 
+local FzfLua = require('fzf-lua')
+FzfLua.setup()
 
-  -- The collection of plugins I know about, but not sure I need it yet
-  -- 1. tabout - https://github.com/abecodes/tabout.nvim
-  -- 2. enwise - https://github.com/mapkts/enwise
+-- FzfLua will be the default for all the "select" actions 
+-- E.g. vim.lsp.buf.code_actions() will open Fzf UI
+FzfLua.register_ui_select()
 
-  ----------------- Themes & Visuals -----------------
-  use { 'sainnhe/everforest' , as = 'everforest' }
-  use { 'morhetz/gruvbox' , as = 'gruvbox' }
-  use { 'sainnhe/sonokai', as = 'sonokai' }
-  use { 'levouh/tint.nvim' }                           -- Dim inactive windows
+require('nvim-treesitter').install({ 'rust', 'javascript', 'typescript', 'python' })
+require('nvim-treesitter').update()
 
-  ----------------- Code & IDEA ----------------------
-  use 'neovim/nvim-lspconfig'                          -- Configuration for Language Server Protocol Client
-  use 'j-hui/fidget.nvim'                              -- Language Server Protocol status bar
-  use 'lukas-reineke/indent-blankline.nvim'            -- Add virtual lines to indentation
-  use 'nvim-lualine/lualine.nvim'                      -- Status line
-  use 'jeffkreeftmeijer/vim-numbertoggle'              -- Toggle number lines option automatically
-  use 'folke/todo-comments.nvim'                       -- Todo comments features
-  use 'nvim-treesitter/nvim-treesitter'                -- Fast syntax-tree parse & highlighter
-  use 'nvim-tree/nvim-web-devicons'                    -- Dev icons (`brew install --cask font-hack-nerd-font`)
-  use { 'nvim-telescope/telescope.nvim', tag = '0.1.0' }  -- File finder, requires `ripgrep` & `df` commands. 
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = "make" } -- Install via `brew install ripgrep` & `brew install fd` & `brew install fzf`
-  use 'nvim-tree/nvim-tree.lua'                        -- File/folder/trees manager
-  use 'kylechui/nvim-surround'                         -- Plugin for convenient brackets
-  use 'voldikss/vim-floaterm'                          -- Plugin for floating terminals
-  use 'scalameta/nvim-metals'                          -- Standalone plugin for Scala LSP
-  use 'rgroli/other.nvim'                              -- Plugin to open alternate files (context dependent)
-  use 'nanozuki/tabby.nvim'                            -- Plugin for better tabline
-  use 'ellisonleao/glow.nvim'                          -- Plugin for markdown preview, requires `brew install glow`
-  use 'preservim/nerdcommenter'                        -- Plugin for commenting stuff
+vim.diagnostic.config({
+    virtual_text = true 
+})
 
-  ----------------- Autocompletion -------------------
-  use 'hrsh7th/nvim-cmp'                               -- Autocompletion plugin
-  use 'hrsh7th/cmp-nvim-lsp'                           -- LSP source for nvim-cmp
-  use 'saadparwaiz1/cmp_luasnip'                       -- Snippets source for nvim-cmp
-  use 'L3MON4D3/LuaSnip'                               -- Snippets plugin
+vim.lsp.config('basedpyright', {
+    cmd = { "uv", "run", "basedpyright-langserver", "--stdio" },
+    settings = { python = {} }
+})
 
-  -- Automatically set up your configuration after cloning packer.nvim
-  if packer_bootstrap then packer.sync() end
+vim.lsp.config('ruff', {
+    cmd = { "uv", "run", "ruff", "server" }
+})
 
-  -- All general settings & options are stored in the `init/editor`
-  dofile(configpath .. "/init/editor.lua")
-  
-  -- netrw plugin options are stored in the `init/netrw`
-  dofile(configpath .. "/init/netrw.lua")
-  
-  -- Extra keymaps are stored in the `init/keymaps`
-  dofile(configpath .. "/init/keymaps.lua")
-  
-  -- Colorscheme & theme settings are stored in the `init/colorscheme`
-  dofile(configpath .. "/init/colorscheme.lua")
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('lua_ls')
+vim.lsp.enable({ 'ts_ls', 'eslint' })
+vim.lsp.enable('basedpyright')
+vim.lsp.enable('ruff')
 
-  ----------------- Plugins configuration ------------
-  dofile(configpath .. "/init/plugins/lsp.lua")
-  dofile(configpath .. "/init/plugins/treesitter.lua")
-  dofile(configpath .. "/init/plugins/telescope.lua")
-  dofile(configpath .. "/init/plugins/floaterm.lua")
-  dofile(configpath .. "/init/plugins/other.lua")
-  dofile(configpath .. "/init/plugins/tree.lua")
-  dofile(configpath .. "/init/plugins/tabby.lua")
+-- Keymaps
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
-  -- LSP real-time status configuration
-  require('fidget').setup {
-    text = {
-      spinner = "dots"
-    }
-  }
-  
-  require('lualine').setup {        -- Status line configuration
-    options = { theme = 'sonokai' }
-  }
+vim.keymap.set('n', '\\[', ':e $MYVIMRC<CR>')
+vim.keymap.set('n', '\\]', FzfLua.helptags)
+vim.keymap.set('n', '\\h', ':noh<CR>')
 
-  require('tint').setup {           -- Dim inactive windows
-    tint = -30,
-  }
+vim.keymap.set('n', '<C-h>', '<C-w>h')
+vim.keymap.set('n', '<C-j>', '<C-w>j')
+vim.keymap.set('n', '<C-k>', '<C-w>k')
+vim.keymap.set('n', '<C-l>', '<C-w>l')
+vim.keymap.set('n', '<A-k>', ':resize -4<CR>')
+vim.keymap.set('n', '<A-j>', ':resize +4<CR>')
+vim.keymap.set('n', '<A-h>', ':vertical resize -4<CR>')
+vim.keymap.set('n', '<A-l>', ':vertical resize +4<CR>')
 
-  require('todo-comments').setup {} -- TODO comments plugin configuration
-  require('nvim-surround').setup {} -- Convenient brackets configuration
-  require('glow').setup {}          -- Markdown preview
-end
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
-return packer.startup(startup)
+vim.keymap.set('n', '<leader>q', FzfLua.global)
+vim.keymap.set('n', '<leader>w', FzfLua.files)
+vim.keymap.set('n', '<leader>e', FzfLua.quickfix)
+vim.keymap.set('n', '<leader>r', FzfLua.resume)
+vim.keymap.set('n', '<leader>t', FzfLua.live_grep)
+vim.keymap.set('n', '<leader>a', '<C-^>')
+vim.keymap.set('n', '<leader>-', ':Oil<CR>')
+vim.keymap.set('n', '<leader>_', ':Oil ' .. vim.fn.getcwd() .. '<CR>')
+
+vim.keymap.set('n', '<leader>x', ':confirm quit<CR>')
+vim.keymap.set('n', '<leader>u', vim.lsp.buf.format)
+vim.keymap.set('n', '<leader>fr', FzfLua.lsp_references)
+vim.keymap.set('n', '<leader>fi', FzfLua.lsp_implementations)
+vim.keymap.set('n', '<leader>fo', vim.lsp.buf.outgoing_calls)
+vim.keymap.set('n', '<leader>fd', FzfLua.lsp_definitions)
+vim.keymap.set('n', '<leader>sa', vim.lsp.buf.code_action)
+vim.keymap.set('n', '<leader>sd', FzfLua.lsp_document_symbols)
+vim.keymap.set('n', '<leader>sw', FzfLua.lsp_live_workspace_symbols)
+vim.keymap.set('n', '<leader>sr', vim.lsp.buf.rename)
+vim.keymap.set('n', '<leader>ss', vim.lsp.buf.incoming_calls)
+vim.keymap.set('n', '<leader>dd', FzfLua.lsp_document_diagnostics)
+vim.keymap.set('n', '<leader>dw', FzfLua.lsp_workspace_diagnostics)
+
+vim.keymap.set('t', '\\d', '<C-\\><C-N>')
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-N>')
+vim.keymap.set('t', '<C-h>', '<cmd>wincmd h<CR>')
+vim.keymap.set('t', '<C-j>', '<cmd>wincmd j<CR>')
+vim.keymap.set('t', '<C-k>', '<cmd>wincmd k<CR>')
+vim.keymap.set('t', '<C-l>', '<cmd>wincmd l<CR>')

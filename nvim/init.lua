@@ -25,7 +25,6 @@ vim.o.pumblend = 15
 local gh = function(x) return 'https://github.com/' .. x end
 
 vim.pack.add({
-  { src = gh('ibhagwan/fzf-lua') },
   { src = gh('neovim/nvim-lspconfig') },
   { src = gh('nvim-mini/mini.indentscope') },
   { src = gh('nvim-mini/mini.icons') },
@@ -33,6 +32,8 @@ vim.pack.add({
   { src = gh('nvim-mini/mini.completion') },
   { src = gh('nvim-mini/mini.statusline') },
   { src = gh('nvim-mini/mini.files') },
+  { src = gh('nvim-mini/mini.pick') },
+  { src = gh('nvim-mini/mini.extra') },
   { src = gh('nvim-treesitter/nvim-treesitter') },
   { src = gh('sainnhe/sonokai'), name = "theme-sonokai" },
   { src = gh('rebelot/kanagawa.nvim'), name = "theme-kanagawa" },
@@ -52,12 +53,11 @@ require('mini.statusline').setup()
 local MiniFiles = require('mini.files')
 MiniFiles.setup()
 
-local FzfLua = require('fzf-lua')
-FzfLua.setup()
+local MiniPick = require('mini.pick')
+MiniPick.setup()
 
--- FzfLua will be the default for all the "select" actions 
--- E.g. vim.lsp.buf.code_actions() will open Fzf UI
-FzfLua.register_ui_select()
+local MiniExtra = require('mini.extra')
+MiniExtra.setup()
 
 require('nvim-treesitter').install({ 'rust', 'javascript', 'typescript', 'python' })
 require('nvim-treesitter').update()
@@ -86,7 +86,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.keymap.set('n', '\\[', ':e $MYVIMRC<CR>')
-vim.keymap.set('n', '\\]', FzfLua.helptags)
+vim.keymap.set('n', '\\]', MiniPick.builtin.help)
 vim.keymap.set('n', '\\h', ':noh<CR>')
 
 vim.keymap.set('n', '<C-h>', '<C-w>h')
@@ -101,28 +101,27 @@ vim.keymap.set('n', '<A-l>', ':vertical resize +4<CR>')
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
-vim.keymap.set('n', '<leader>q', FzfLua.global)
-vim.keymap.set('n', '<leader>w', FzfLua.files)
-vim.keymap.set('n', '<leader>e', FzfLua.quickfix)
-vim.keymap.set('n', '<leader>r', FzfLua.resume)
-vim.keymap.set('n', '<leader>t', FzfLua.live_grep)
+vim.keymap.set('n', '<leader>w', MiniPick.builtin.files)
+vim.keymap.set('n', '<leader>e', MiniExtra.pickers.marks)
+vim.keymap.set('n', '<leader>r', MiniPick.builtin.resume)
+vim.keymap.set('n', '<leader>t', MiniPick.builtin.grep_live)
 vim.keymap.set('n', '<leader>a', '<C-^>')
 vim.keymap.set('n', '<leader>-', MiniFiles.open)
 vim.keymap.set('n', '<leader>_', function() MiniFiles.open(nil, false) end)
 
 vim.keymap.set('n', '<leader>x', ':confirm quit<CR>')
 vim.keymap.set('n', '<leader>u', vim.lsp.buf.format)
-vim.keymap.set('n', '<leader>fr', FzfLua.lsp_references)
-vim.keymap.set('n', '<leader>fi', FzfLua.lsp_implementations)
-vim.keymap.set('n', '<leader>fo', vim.lsp.buf.outgoing_calls)
-vim.keymap.set('n', '<leader>fd', FzfLua.lsp_definitions)
 vim.keymap.set('n', '<leader>sa', vim.lsp.buf.code_action)
-vim.keymap.set('n', '<leader>sd', FzfLua.lsp_document_symbols)
-vim.keymap.set('n', '<leader>sw', FzfLua.lsp_live_workspace_symbols)
 vim.keymap.set('n', '<leader>sr', vim.lsp.buf.rename)
-vim.keymap.set('n', '<leader>ss', vim.lsp.buf.incoming_calls)
-vim.keymap.set('n', '<leader>dd', FzfLua.lsp_document_diagnostics)
-vim.keymap.set('n', '<leader>dw', FzfLua.lsp_workspace_diagnostics)
+vim.keymap.set('n', '<leader>si', vim.lsp.buf.incoming_calls)
+vim.keymap.set('n', '<leader>so', vim.lsp.buf.outgoing_calls)
+vim.keymap.set('n', '<leader>fr', [[:Pick lsp scope='references'<CR>]])
+vim.keymap.set('n', '<leader>fi', [[:Pick lsp scope='implementation'<CR>]])
+vim.keymap.set('n', '<leader>fd', [[:Pick lsp scope='definition'<CR>]])
+vim.keymap.set('n', '<leader>ds', [[:Pick lsp scope='document_symbol'<CR>]])
+vim.keymap.set('n', '<leader>ws', [[:Pick lsp scope='workspace_symbol_livelass '<CR>]])
+vim.keymap.set('n', '<leader>dd', [[:Pick diagnostic scope='current'<CR>]])
+vim.keymap.set('n', '<leader>wd', [[:Pick diagnostic scope='all'<CR>]])
 
 vim.keymap.set('t', '\\d', '<C-\\><C-N>')
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-N>')

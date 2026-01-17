@@ -15,7 +15,8 @@ vim.o.winheight = 10
 vim.o.winborder = "rounded"
 vim.o.winblend = 5
 vim.o.autocomplete = true
-vim.o.completeopt = 'fuzzy,menu,menuone,popup,noinsert'
+vim.o.completeopt = 'menuone,popup,noselect,fuzzy,nosort'
+vim.o.completefunc = 'v:lua.MiniCompletion.completefunc_lsp'
 vim.o.pumborder = "rounded"
 vim.o.pumheight = 10
 vim.o.pummaxwidth = 45
@@ -26,12 +27,13 @@ local gh = function(x) return 'https://github.com/' .. x end
 vim.pack.add({
   { src = gh('ibhagwan/fzf-lua') },
   { src = gh('neovim/nvim-lspconfig') },
-  { src = gh('nvim-lualine/lualine.nvim') },
+  { src = gh('nvim-mini/mini.indentscope') },
+  { src = gh('nvim-mini/mini.icons') },
+  { src = gh('nvim-mini/mini.snippets') },
+  { src = gh('nvim-mini/mini.completion') },
+  { src = gh('nvim-mini/mini.statusline') },
+  { src = gh('nvim-mini/mini.files') },
   { src = gh('nvim-treesitter/nvim-treesitter') },
-  { src = gh('stevearc/oil.nvim') },
-  { src = gh('JezerM/oil-lsp-diagnostics.nvim') },
-  { src = gh('benomahony/oil-git.nvim') },
-  { src = gh('nvim-tree/nvim-web-devicons') },
   { src = gh('sainnhe/sonokai'), name = "theme-sonokai" },
   { src = gh('rebelot/kanagawa.nvim'), name = "theme-kanagawa" },
 })
@@ -41,10 +43,14 @@ vim.pack.add({
 vim.g.sonokai_dim_inactive_windows = 1
 vim.cmd("colorscheme sonokai | hi WinSeparator guifg='NvimDarkGray4'")
 
-require('lualine').setup()
+require('mini.indentscope').setup()
+require('mini.icons').setup()
+require('mini.snippets').setup()
+require('mini.completion').setup()
+require('mini.statusline').setup()
 
-require('oil').setup()
-require('oil-lsp-diagnostics').setup()
+local MiniFiles = require('mini.files')
+MiniFiles.setup()
 
 local FzfLua = require('fzf-lua')
 FzfLua.setup()
@@ -101,8 +107,8 @@ vim.keymap.set('n', '<leader>e', FzfLua.quickfix)
 vim.keymap.set('n', '<leader>r', FzfLua.resume)
 vim.keymap.set('n', '<leader>t', FzfLua.live_grep)
 vim.keymap.set('n', '<leader>a', '<C-^>')
-vim.keymap.set('n', '<leader>-', ':Oil<CR>')
-vim.keymap.set('n', '<leader>_', ':Oil ' .. vim.fn.getcwd() .. '<CR>')
+vim.keymap.set('n', '<leader>-', MiniFiles.open)
+vim.keymap.set('n', '<leader>_', function() MiniFiles.open(nil, false) end)
 
 vim.keymap.set('n', '<leader>x', ':confirm quit<CR>')
 vim.keymap.set('n', '<leader>u', vim.lsp.buf.format)

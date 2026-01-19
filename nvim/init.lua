@@ -1,4 +1,5 @@
 vim.o.number = true
+    
 vim.o.relativenumber = true
 vim.o.mouse = 'a'
 vim.o.shiftwidth = 4
@@ -48,7 +49,6 @@ vim.cmd("colorscheme sonokai | hi WinSeparator guifg='NvimDarkGray4'")
 require('mini.indentscope').setup()
 require('mini.icons').setup()
 require('mini.snippets').setup()
-require('mini.completion').setup()
 require('mini.statusline').setup()
 
 local MiniFiles = require('mini.files')
@@ -60,6 +60,35 @@ MiniPick.setup()
 local MiniExtra = require('mini.extra')
 MiniExtra.setup()
 
+local MiniCompletion = require('mini.completion')
+-- Customize post-processing of LSP responses for a better user experience.
+-- Don't show 'Text' suggestions (usually noisy) and show snippets last.
+local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
+local process_items = function(items, base)
+    return MiniCompletion.default_process_items(items, base, process_items_opts)
+end
+MiniCompletion.setup({
+    lsp_completion = {
+      -- Without this config autocompletion is set up through `:h 'completefunc'`.
+      -- Although not needed, setting up through `:h 'omnifunc'` is cleaner
+      -- (sets up only when needed) and makes it possible to use `<C-u>`.
+      source_func = 'omnifunc',
+      auto_setup = false,
+      process_items = process_items,
+    },
+})
+
+-- Set 'omnifunc' for LSP completion only when needed.
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(ev)
+    vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+  end
+})
+
+-- Advertise to servers that Neovim now supports certain set of completion and
+-- signature features through 'mini.completion'.
+vim.lsp.config('*', { capabilities = MiniCompletion.get_lsp_capabilities() })
+
 require('nvim-treesitter').install({ 'rust', 'javascript', 'typescript', 'python' })
 require('nvim-treesitter').update()
 
@@ -67,20 +96,14 @@ vim.diagnostic.config({
     virtual_text = true
 })
 
-vim.lsp.config('basedpyright', {
-    cmd = { "uv", "run", "basedpyright-langserver", "--stdio" },
-    settings = { python = {} }
-})
-
-vim.lsp.config('ruff', {
-    cmd = { "uv", "run", "ruff", "server" }
+vim.lsp.config('pylsp', {
+    cmd = { "uv", "run", "pylsp" },
 })
 
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable({ 'ts_ls', 'eslint' })
-vim.lsp.enable('basedpyright')
-vim.lsp.enable('ruff')
+vim.lsp.enable('pylsp')
 
 -- Keymaps
 vim.g.mapleader = ' '

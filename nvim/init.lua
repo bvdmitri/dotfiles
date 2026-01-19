@@ -14,12 +14,13 @@ vim.o.winheight = 10
 vim.o.winborder = "rounded"
 vim.o.winblend = 5
 vim.o.autocomplete = true
-vim.o.completeopt = 'menuone,popup,noselect,fuzzy,nosort'
+vim.o.completeopt = 'menuone,popup,noselect,fuzzy'
 vim.o.completefunc = 'v:lua.MiniCompletion.completefunc_lsp'
 vim.o.pumborder = "rounded"
 vim.o.pumheight = 10
 vim.o.pummaxwidth = 45
 vim.o.pumblend = 15
+vim.o.colorcolumn = '80'
 
 local gh = function(x) return 'https://github.com/' .. x end
 
@@ -87,9 +88,14 @@ vim.g.maplocalleader = ' '
 
 local wk = require('which-key')
 
-wk.setup({ preset = 'helix' })
+wk.setup({
+    preset = 'helix',
+    spec = {
+        { '\\',        group = 'Utilities' },
+        { '<leader>f', group = 'File/Find' }
+    }
+})
 
-wk.add({ '\\', group = 'Utilities' })
 vim.keymap.set('n', '\\[', ':e $MYVIMRC<CR>', { desc = 'Change my Neovim config' })
 vim.keymap.set('n', '\\]', MiniPick.builtin.help, { desc = 'Search help' })
 vim.keymap.set('n', '\\h', ':noh<CR>', { desc = 'Clear search highlight' })
@@ -107,7 +113,6 @@ vim.keymap.set('n', '<A-l>', ':vertical resize +4<CR>', { desc = 'Make window la
 vim.keymap.set('n', '<leader>e', MiniFiles.open, { desc = 'Explorer MiniFiles (resume)' })
 vim.keymap.set('n', '<leader>E', function() MiniFiles.open(nil, false) end, { desc = 'Explorer MiniFiles (cwd)' })
 
-wk.add({ '<leader>f', group = 'File/Find' })
 vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'Find files (MiniPick)' })
 vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers, { desc = 'Find buffers (MiniPick)' })
 vim.keymap.set('n', '<leader>fr', MiniPick.builtin.resume, { desc = 'Resume (MiniPick)' })

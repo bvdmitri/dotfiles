@@ -22,18 +22,18 @@ vim.o.pummaxwidth = 45
 vim.o.pumblend = 5
 vim.o.colorcolumn = '80'
 vim.o.list = true
-vim.o.listchars =  "tab:» ,trail:·,nbsp:␣"
+vim.o.listchars = "tab:» ,trail:·,nbsp:␣"
 vim.o.inccommand = 'split'
 vim.o.updatetime = 250
 vim.o.cursorline = true
 vim.o.scrolloff = 10
 
 vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
-  callback = function()
-    vim.hl.on_yank()
-  end,
+    desc = 'Highlight when yanking (copying) text',
+    group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+    callback = function()
+        vim.hl.on_yank()
+    end,
 })
 
 local gh = function(x) return 'https://github.com/' .. x end
@@ -93,20 +93,20 @@ local process_items = function(items, base)
 end
 MiniCompletion.setup({
     lsp_completion = {
-      -- Without this config autocompletion is set up through `:h 'completefunc'`.
-      -- Although not needed, setting up through `:h 'omnifunc'` is cleaner
-      -- (sets up only when needed) and makes it possible to use `<C-u>`.
-      source_func = 'omnifunc',
-      auto_setup = false,
-      process_items = process_items,
+        -- Without this config autocompletion is set up through `:h 'completefunc'`.
+        -- Although not needed, setting up through `:h 'omnifunc'` is cleaner
+        -- (sets up only when needed) and makes it possible to use `<C-u>`.
+        source_func = 'omnifunc',
+        auto_setup = false,
+        process_items = process_items,
     },
 })
 
 -- Set 'omnifunc' for LSP completion only when needed.
 vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(ev)
-    vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-  end
+    callback = function(ev)
+        vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+    end
 })
 
 -- Advertise to servers that Neovim now supports certain set of completion and
@@ -118,7 +118,7 @@ MiniSnippets.setup({
     snippets = {
         -- Load custom file with global snippets first
         MiniSnippets.gen_loader.from_file('~/.config/nvim/snippets/global.json'),
-        -- Load snippets based on current language by reading files from 
+        -- Load snippets based on current language by reading files from
         -- "snippets/" subdirectories from 'runtimepath' directories
         MiniSnippets.gen_loader.from_lang(),
     },
@@ -136,9 +136,22 @@ MiniKeymap.map_multistep('i', '<CR>', { 'pmenu_accept', 'minipairs_cr' })
 -- On `<BS>` just try to account for pairs from 'mini.pairs'
 MiniKeymap.map_multistep('i', '<BS>', { 'minipairs_bs' })
 
-
-require('nvim-treesitter').install({ 'rust', 'javascript', 'typescript', 'python' })
-require('nvim-treesitter').update()
+local NvimTreesitter = require('nvim-treesitter')
+NvimTreesitter.install({
+    'rust',
+    'javascript',
+    'typescript',
+    'python',
+    'bash',
+    'vim',
+    'vimdoc',
+    'c',
+    'diff',
+    'html',
+    'lua',
+    'markdown',
+})
+NvimTreesitter.update()
 
 vim.diagnostic.config({
     virtual_text = true
@@ -219,8 +232,8 @@ vim.keymap.set('n', '<leader>fr', MiniPick.builtin.resume, { desc = 'Resume (Min
 
 -- Search
 vim.keymap.set('n', '<leader>ss', [[:Pick lsp scope='document_symbol'<CR>]], { desc = 'Buffer symbols (MiniPick)' })
-vim.keymap.set('n', '<leader>sS', [[:Pick lsp scope='workspace_symbol_live'<CR>]], { desc = 'Workspace symbols (MiniPick)' })
+vim.keymap.set('n', '<leader>sS', [[:Pick lsp scope='workspace_symbol_live'<CR>]],
+    { desc = 'Workspace symbols (MiniPick)' })
 vim.keymap.set('n', '<leader>sd', [[:Pick diagnostic scope='current'<CR>]], { desc = 'Buffer diagnostics (MiniPick)' })
-vim.keymap.set('n', '<leader>sD', [[:Pick diagnostic scope='all'<CR>]], {desc = 'Workspace diagnostics (MiniPick)' })
+vim.keymap.set('n', '<leader>sD', [[:Pick diagnostic scope='all'<CR>]], { desc = 'Workspace diagnostics (MiniPick)' })
 vim.keymap.set('n', '<leader>sG', MiniPick.builtin.grep_live, { desc = 'Grep live (MiniPick)' })
-

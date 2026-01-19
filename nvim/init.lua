@@ -38,7 +38,7 @@ vim.pack.add({
     { src = gh('nvim-mini/mini.extra') },
     { src = gh('nvim-treesitter/nvim-treesitter') },
     { src = gh('folke/which-key.nvim') },
-    { src = gh('honza/vim-snippets') },
+    { src = gh('rafamadriz/friendly-snippets') },
     { src = gh('sainnhe/sonokai'),                name = "theme-sonokai" },
     { src = gh('rebelot/kanagawa.nvim'),          name = "theme-kanagawa" },
 })
@@ -157,6 +157,7 @@ vim.keymap.set('n', '<A-h>', ':vertical resize -4<CR>', { desc = 'Make window sm
 vim.keymap.set('n', '<A-l>', ':vertical resize +4<CR>', { desc = 'Make window larger vertically' })
 vim.keymap.set('t', '\\d', '<C-\\><C-N>', { desc = 'Detach from terminal input mode' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-N>', { desc = 'Detach from terminal input mode' })
+vim.keymap.set('i', '<C-x><C-x>', '<C-x><C-o>', { desc = 'Open omni-completion' })
 
 -- Utilities group
 vim.keymap.set('n', '\\[', ':e $MYVIMRC<CR>', { desc = 'Edit my Neovim config' })
@@ -187,7 +188,7 @@ vim.keymap.set('n', '<leader>gD', [[:Pick lsp scope='declaration'<CR>]], { desc 
 vim.keymap.set('n', '<leader>gt', [[:Pick lsp scope='type_definition'<CR>]], { desc = 'Go to type definition' })
 
 -- File/Find group
-vim.keymap.set('n', '<leader>fa', '<C-^', { desc = 'Open alternative file' })
+vim.keymap.set('n', '<leader>fa', '<C-^>', { desc = 'Open alternative file' })
 vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'Find files (MiniPick)' })
 vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers, { desc = 'Find buffers (MiniPick)' })
 vim.keymap.set('n', '<leader>fr', MiniPick.builtin.resume, { desc = 'Resume (MiniPick)' })

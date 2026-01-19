@@ -34,9 +34,11 @@ vim.pack.add({
     { src = gh('nvim-mini/mini.statusline') },
     { src = gh('nvim-mini/mini.files') },
     { src = gh('nvim-mini/mini.pick') },
+    { src = gh('nvim-mini/mini.keymap') },
     { src = gh('nvim-mini/mini.extra') },
     { src = gh('nvim-treesitter/nvim-treesitter') },
     { src = gh('folke/which-key.nvim') },
+    { src = gh('honza/vim-snippets') },
     { src = gh('sainnhe/sonokai'),                name = "theme-sonokai" },
     { src = gh('rebelot/kanagawa.nvim'),          name = "theme-kanagawa" },
 })
@@ -48,7 +50,6 @@ vim.cmd("colorscheme sonokai | hi WinSeparator guifg='NvimDarkGray4'")
 
 require('mini.indentscope').setup()
 require('mini.icons').setup()
-require('mini.snippets').setup()
 require('mini.statusline').setup()
 
 local MiniFiles = require('mini.files')
@@ -88,6 +89,30 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Advertise to servers that Neovim now supports certain set of completion and
 -- signature features through 'mini.completion'.
 vim.lsp.config('*', { capabilities = MiniCompletion.get_lsp_capabilities() })
+
+local MiniSnippets = require('mini.snippets')
+MiniSnippets.setup({
+    snippets = {
+        -- Load custom file with global snippets first
+        MiniSnippets.gen_loader.from_file('~/.config/nvim/snippets/global.json'),
+        -- Load snippets based on current language by reading files from 
+        -- "snippets/" subdirectories from 'runtimepath' directories
+        MiniSnippets.gen_loader.from_lang(),
+    },
+})
+MiniSnippets.start_lsp_server()
+
+local MiniKeymap = require('mini.keymap')
+-- Cycle through popup menu items with MiniCompletion
+MiniKeymap.map_multistep('i', '<Tab>', { 'pmenu_next' })
+-- Cycle through popup menu items backwards with MiniCompletion
+MiniKeymap.map_multistep('i', '<S-Tab>', { 'pmenu_prev' })
+-- On `<CR>` try to accept current completion item, fall back to accounting
+-- for pairs from 'mini.pairs'
+MiniKeymap.map_multistep('i', '<CR>', { 'pmenu_accept', 'minipairs_cr' })
+-- On `<BS>` just try to account for pairs from 'mini.pairs'
+MiniKeymap.map_multistep('i', '<BS>', { 'minipairs_bs' })
+
 
 require('nvim-treesitter').install({ 'rust', 'javascript', 'typescript', 'python' })
 require('nvim-treesitter').update()

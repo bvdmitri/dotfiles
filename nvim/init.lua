@@ -126,14 +126,14 @@ MiniSnippets.setup({
 MiniSnippets.start_lsp_server()
 
 local MiniKeymap = require('mini.keymap')
--- Cycle through popup menu items with MiniCompletion
-MiniKeymap.map_multistep('i', '<Tab>', { 'pmenu_next' })
--- Cycle through popup menu items backwards with MiniCompletion
-MiniKeymap.map_multistep('i', '<S-Tab>', { 'pmenu_prev' })
--- On `<CR>` try to accept current completion item, fall back to accounting
--- for pairs from 'mini.pairs'
-MiniKeymap.map_multistep('i', '<CR>', { 'pmenu_accept', 'minipairs_cr' })
+-- Cycle through popup menu items with <Tab>
+-- Cycle through popup menu items backwards with <S-Tab>
+-- On `<CR>` try to accept current completion item,
+-- fall back to accounting for pairs from 'mini.pairs'
 -- On `<BS>` just try to account for pairs from 'mini.pairs'
+MiniKeymap.map_multistep('i', '<Tab>', { 'pmenu_next' })
+MiniKeymap.map_multistep('i', '<S-Tab>', { 'pmenu_prev' })
+MiniKeymap.map_multistep('i', '<CR>', { 'pmenu_accept', 'minipairs_cr' })
 MiniKeymap.map_multistep('i', '<BS>', { 'minipairs_bs' })
 
 local NvimTreesitter = require('nvim-treesitter')
@@ -226,14 +226,13 @@ vim.keymap.set('n', '<leader>gt', [[:Pick lsp scope='type_definition'<CR>]], { d
 
 -- File/Find group
 vim.keymap.set('n', '<leader>fa', '<C-^>', { desc = 'Open alternative file' })
-vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'Find files (MiniPick)' })
-vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers, { desc = 'Find buffers (MiniPick)' })
-vim.keymap.set('n', '<leader>fr', MiniPick.builtin.resume, { desc = 'Resume (MiniPick)' })
+vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers, { desc = 'Find buffers' })
+vim.keymap.set('n', '<leader>fr', MiniPick.builtin.resume, { desc = 'Resume' })
 
 -- Search
-vim.keymap.set('n', '<leader>ss', [[:Pick lsp scope='document_symbol'<CR>]], { desc = 'Buffer symbols (MiniPick)' })
-vim.keymap.set('n', '<leader>sS', [[:Pick lsp scope='workspace_symbol_live'<CR>]],
-    { desc = 'Workspace symbols (MiniPick)' })
-vim.keymap.set('n', '<leader>sd', [[:Pick diagnostic scope='current'<CR>]], { desc = 'Buffer diagnostics (MiniPick)' })
-vim.keymap.set('n', '<leader>sD', [[:Pick diagnostic scope='all'<CR>]], { desc = 'Workspace diagnostics (MiniPick)' })
-vim.keymap.set('n', '<leader>sG', MiniPick.builtin.grep_live, { desc = 'Grep live (MiniPick)' })
+vim.keymap.set('n', '<leader>ss', [[:Pick lsp scope='document_symbol'<CR>]], { desc = 'Buffer symbols' })
+vim.keymap.set('n', '<leader>sS', [[:Pick lsp scope='workspace_symbol_live'<CR>]], { desc = 'Workspace symbols' })
+vim.keymap.set('n', '<leader>sd', [[:Pick diagnostic scope='current'<CR>]], { desc = 'Buffer diagnostics' })
+vim.keymap.set('n', '<leader>sD', [[:Pick diagnostic scope='all'<CR>]], { desc = 'Workspace diagnostics' })
+vim.keymap.set('n', '<leader>sG', MiniPick.builtin.grep_live, { desc = 'Grep live' })

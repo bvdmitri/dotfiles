@@ -1,5 +1,4 @@
 vim.o.number = true
-    
 vim.o.relativenumber = true
 vim.o.mouse = 'a'
 vim.o.shiftwidth = 4
@@ -22,6 +21,20 @@ vim.o.pumheight = 10
 vim.o.pummaxwidth = 45
 vim.o.pumblend = 5
 vim.o.colorcolumn = '80'
+vim.o.list = true
+vim.o.listchars =  "tab:» ,trail:·,nbsp:␣"
+vim.o.inccommand = 'split'
+vim.o.updatetime = 250
+vim.o.cursorline = true
+vim.o.scrolloff = 10
+
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
 
 local gh = function(x) return 'https://github.com/' .. x end
 
@@ -29,6 +42,8 @@ vim.pack.add({
     { src = gh('neovim/nvim-lspconfig') },
     { src = gh('nvim-mini/mini.indentscope') },
     { src = gh('nvim-mini/mini.icons') },
+    { src = gh('nvim-mini/mini.pairs') },
+    { src = gh('nvim-mini/mini.surround') },
     { src = gh('nvim-mini/mini.snippets') },
     { src = gh('nvim-mini/mini.completion') },
     { src = gh('nvim-mini/mini.statusline') },
@@ -38,6 +53,7 @@ vim.pack.add({
     { src = gh('nvim-mini/mini.extra') },
     { src = gh('nvim-treesitter/nvim-treesitter') },
     { src = gh('folke/which-key.nvim') },
+    { src = gh('nmac427/guess-indent.nvim') },
     { src = gh('rafamadriz/friendly-snippets') },
     { src = gh('sainnhe/sonokai'),                name = "theme-sonokai" },
     { src = gh('rebelot/kanagawa.nvim'),          name = "theme-kanagawa" },
@@ -54,7 +70,10 @@ vim.cmd("hi MiniPickMatchRanges guifg='orange'")
 
 require('mini.indentscope').setup()
 require('mini.icons').setup()
+require('mini.pairs').setup()
+require('mini.surround').setup()
 require('mini.statusline').setup()
+require('guess-indent').setup()
 
 local MiniFiles = require('mini.files')
 MiniFiles.setup()

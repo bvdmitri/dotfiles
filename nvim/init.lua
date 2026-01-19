@@ -92,52 +92,62 @@ wk.setup({
     preset = 'helix',
     spec = {
         { '\\',        group = 'Utilities' },
-        { '<leader>f', group = 'File/Find' }
+        { '<leader>c', group = 'Code' },
+        { '<leader>f', group = 'File/Find' },
+        { '<leader>g', group = 'Go to' },
+        { '<leader>s', group = 'Search' },
     }
 })
 
-vim.keymap.set('n', '\\[', ':e $MYVIMRC<CR>', { desc = 'Change my Neovim config' })
-vim.keymap.set('n', '\\]', MiniPick.builtin.help, { desc = 'Search help' })
-vim.keymap.set('n', '\\h', ':noh<CR>', { desc = 'Clear search highlight' })
-vim.keymap.set('n', '\\?', function() wk.show({ global = false }) end, { desc = 'Show buffer local keymaps (which-key)' })
-
-vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to the left window' })
-vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to the bottom window' })
-vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to the top window' })
-vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to the right window' })
+vim.keymap.set({ 'n', 't' }, '<C-h>', '<CMD>wincmd h<CR>', { desc = 'Move to the left window' })
+vim.keymap.set({ 'n', 't' }, '<C-j>', '<CMD>wincmd j<CR>', { desc = 'Move to the bottom window' })
+vim.keymap.set({ 'n', 't' }, '<C-k>', '<CMD>wincmd k<CR>', { desc = 'Move to the top window' })
+vim.keymap.set({ 'n', 't' }, '<C-l>', '<CMD>wincmd l<CR>', { desc = 'Move to the right window' })
 vim.keymap.set('n', '<A-k>', ':resize -4<CR>', { desc = 'Make window smaller horizontally' })
 vim.keymap.set('n', '<A-j>', ':resize +4<CR>', { desc = 'Make window larger horizontally' })
 vim.keymap.set('n', '<A-h>', ':vertical resize -4<CR>', { desc = 'Make window smaller vertically' })
 vim.keymap.set('n', '<A-l>', ':vertical resize +4<CR>', { desc = 'Make window larger vertically' })
+vim.keymap.set('t', '\\d', '<C-\\><C-N>', { desc = 'Detach from terminal input mode' })
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-N>', { desc = 'Detach from terminal input mode' })
 
+-- Utilities group
+vim.keymap.set('n', '\\[', ':e $MYVIMRC<CR>', { desc = 'Edit my Neovim config' })
+vim.keymap.set('n', '\\]', MiniPick.builtin.help, { desc = 'Search help' })
+vim.keymap.set('n', '\\h', ':noh<CR>', { desc = 'Clear search highlight' })
+vim.keymap.set('n', '\\?', function() wk.show({ global = false }) end, { desc = 'Show buffer local keymaps (which-key)' })
+vim.keymap.set('n', '\\x', ':confirm quit<CR>', { desc = 'Confirm quit' })
+
+-- Global group
 vim.keymap.set('n', '<leader>e', MiniFiles.open, { desc = 'Explorer MiniFiles (resume)' })
 vim.keymap.set('n', '<leader>E', function() MiniFiles.open(nil, false) end, { desc = 'Explorer MiniFiles (cwd)' })
+vim.keymap.set('n', '<leader>-', ':split<CR>', { desc = 'Split window below' })
+vim.keymap.set('n', '<leader>|', ':vsplit<CR>', { desc = 'Split window right' })
 
+-- Code group
+vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, { desc = 'Format code' })
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code action' })
+vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line diagnostic' })
+vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = 'Rename symbol under cursor' })
+vim.keymap.set('n', '<leader>ci', vim.lsp.buf.incoming_calls, { desc = 'Incoming calls (citations)' })
+vim.keymap.set('n', '<leader>co', vim.lsp.buf.outgoing_calls, { desc = 'Outgoing calls (children)' })
+
+-- Go to group
+vim.keymap.set('n', '<leader>gr', [[:Pick lsp scope='references'<CR>]], { desc = 'Go to references' })
+vim.keymap.set('n', '<leader>gi', [[:Pick lsp scope='implementation'<CR>]], { desc = 'Go to implementations' })
+vim.keymap.set('n', '<leader>gd', [[:Pick lsp scope='definition'<CR>]], { desc = 'Go to definition' })
+vim.keymap.set('n', '<leader>gD', [[:Pick lsp scope='declaration'<CR>]], { desc = 'Go to declaration' })
+vim.keymap.set('n', '<leader>gt', [[:Pick lsp scope='type_definition'<CR>]], { desc = 'Go to type definition' })
+
+-- File/Find group
+vim.keymap.set('n', '<leader>fa', '<C-^', { desc = 'Open alternative file' })
 vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'Find files (MiniPick)' })
 vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers, { desc = 'Find buffers (MiniPick)' })
 vim.keymap.set('n', '<leader>fr', MiniPick.builtin.resume, { desc = 'Resume (MiniPick)' })
--- vim.keymap.set('n', '<leader>e', MiniExtra.pickers.marks)
-vim.keymap.set('n', '<leader>r', MiniPick.builtin.resume)
-vim.keymap.set('n', '<leader>t', MiniPick.builtin.grep_live)
-vim.keymap.set('n', '<leader>a', '<C-^>')
 
-vim.keymap.set('n', '<leader>x', ':confirm quit<CR>')
-vim.keymap.set('n', '<leader>u', vim.lsp.buf.format)
-vim.keymap.set('n', '<leader>sa', vim.lsp.buf.code_action)
-vim.keymap.set('n', '<leader>sr', vim.lsp.buf.rename)
-vim.keymap.set('n', '<leader>si', vim.lsp.buf.incoming_calls)
-vim.keymap.set('n', '<leader>so', vim.lsp.buf.outgoing_calls)
--- vim.keymap.set('n', '<leader>fr', [[:Pick lsp scope='references'<CR>]])
--- vim.keymap.set('n', '<leader>fi', [[:Pick lsp scope='implementation'<CR>]])
--- vim.keymap.set('n', '<leader>fd', [[:Pick lsp scope='definition'<CR>]])
-vim.keymap.set('n', '<leader>ds', [[:Pick lsp scope='document_symbol'<CR>]])
-vim.keymap.set('n', '<leader>ws', [[:Pick lsp scope='workspace_symbol_livelass '<CR>]])
-vim.keymap.set('n', '<leader>dd', [[:Pick diagnostic scope='current'<CR>]])
-vim.keymap.set('n', '<leader>wd', [[:Pick diagnostic scope='all'<CR>]])
+-- Search
+vim.keymap.set('n', '<leader>ss', [[:Pick lsp scope='document_symbol'<CR>]], { desc = 'Buffer symbols (MiniPick)' })
+vim.keymap.set('n', '<leader>sS', [[:Pick lsp scope='workspace_symbol_live'<CR>]], { desc = 'Workspace symbols (MiniPick)' })
+vim.keymap.set('n', '<leader>sd', [[:Pick diagnostic scope='current'<CR>]], { desc = 'Buffer diagnostics (MiniPick)' })
+vim.keymap.set('n', '<leader>sD', [[:Pick diagnostic scope='all'<CR>]], {desc = 'Workspace diagnostics (MiniPick)' })
+vim.keymap.set('n', '<leader>sG', MiniPick.builtin.grep_live, { desc = 'Grep live (MiniPick)' })
 
-vim.keymap.set('t', '\\d', '<C-\\><C-N>')
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-N>')
-vim.keymap.set('t', '<C-h>', '<cmd>wincmd h<CR>')
-vim.keymap.set('t', '<C-j>', '<cmd>wincmd j<CR>')
-vim.keymap.set('t', '<C-k>', '<cmd>wincmd k<CR>')
-vim.keymap.set('t', '<C-l>', '<cmd>wincmd l<CR>')

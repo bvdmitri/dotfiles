@@ -20,7 +20,7 @@ vim.o.completefunc = 'v:lua.MiniCompletion.completefunc_lsp'
 vim.o.pumborder = "rounded"
 vim.o.pumheight = 10
 vim.o.pummaxwidth = 45
-vim.o.pumblend = 15
+vim.o.pumblend = 5
 vim.o.colorcolumn = '80'
 
 local gh = function(x) return 'https://github.com/' .. x end
@@ -46,7 +46,11 @@ vim.pack.add({
 -- I Like sonokai overall, but they use ugly black type of
 -- WinSeparator, so I change it to light gray instead
 vim.g.sonokai_dim_inactive_windows = 1
-vim.cmd("colorscheme sonokai | hi WinSeparator guifg='NvimDarkGray4'")
+vim.cmd("colorscheme sonokai")
+
+vim.cmd("hi MiniPickMatchCurrent guibg='NvimDarkGray4'")
+vim.cmd("hi MiniPickMatchMarked guifg='lightgreen'")
+vim.cmd("hi MiniPickMatchRanges guifg='orange'")
 
 require('mini.indentscope').setup()
 require('mini.icons').setup()
@@ -121,14 +125,15 @@ vim.diagnostic.config({
     virtual_text = true
 })
 
-vim.lsp.config('pylsp', {
-    cmd = { "uv", "run", "pylsp" },
-})
+vim.lsp.config('basedpyright', { cmd = { "uv", "run", "basedpyright-langserver", "--stdio" } })
+vim.lsp.config('ruff', { cmd = { "uv", "run", "ruff", "server" } })
 
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('lua_ls')
-vim.lsp.enable({ 'ts_ls', 'eslint' })
-vim.lsp.enable('pylsp')
+vim.lsp.enable('ts_ls')
+vim.lsp.enable('eslint')
+vim.lsp.enable('basedpyright')
+vim.lsp.enable('ruff')
 
 -- Keymaps
 vim.g.mapleader = ' '

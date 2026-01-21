@@ -40,6 +40,12 @@ local gh = function(x) return 'https://github.com/' .. x end
 
 vim.pack.add({
     { src = gh('neovim/nvim-lspconfig') },
+    { src = gh('mason-org/mason.nvim') },
+    { src = gh('mason-org/mason-lspconfig.nvim') },
+    { src = gh('mfussenegger/nvim-dap') },
+    { src = gh('nvim-neotest/nvim-nio') },
+    { src = gh('rcarriga/nvim-dap-ui') },
+    { src = gh('jay-babu/mason-nvim-dap.nvim') },
     { src = gh('nvim-mini/mini.indentscope') },
     { src = gh('nvim-mini/mini.icons') },
     { src = gh('nvim-mini/mini.pairs') },
@@ -62,6 +68,8 @@ vim.pack.add({
 -- I Like sonokai overall, but they use ugly black type of
 -- WinSeparator, so I change it to light gray instead
 vim.g.sonokai_dim_inactive_windows = 1
+vim.g.sonokai_float_style = 'blend'
+vim.g.sonokai_disable_terminal_colors = 1
 vim.cmd("colorscheme sonokai")
 
 vim.cmd("hi MiniPickMatchCurrent guibg='NvimDarkGray4'")
@@ -157,15 +165,24 @@ vim.diagnostic.config({
     virtual_text = true
 })
 
-vim.lsp.config('basedpyright', { cmd = { "uv", "run", "basedpyright-langserver", "--stdio" } })
-vim.lsp.config('ruff', { cmd = { "uv", "run", "ruff", "server" } })
-
-vim.lsp.enable('rust_analyzer')
-vim.lsp.enable('lua_ls')
-vim.lsp.enable('ts_ls')
-vim.lsp.enable('eslint')
-vim.lsp.enable('basedpyright')
-vim.lsp.enable('ruff')
+require('mason').setup()
+require('mason-lspconfig').setup({
+    ensure_installed = {
+        'rust_analyzer',
+        'ts_ls',
+        'lua_ls',
+        'eslint',
+        'basedpyright',
+        'ruff',
+        'clangd'
+    }
+})
+require('mason-nvim-dap').setup({
+    ensure_installed = {
+        'cppdbg', 'python'
+    }
+})
+require('dapui').setup()
 
 -- Keymaps
 vim.g.mapleader = ' '

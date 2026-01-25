@@ -23,6 +23,10 @@ function pick.diagnostic(scope)
     return function() MiniExtra.pickers.diagnostic({ scope = scope }) end
 end
 
+function pick.list(scope)
+    return function() MiniExtra.pickers.list({ scope = scope }) end
+end
+
 keymap.add_group('Go To', '<leader>g')
 keymap.nmap('<leader>gr', pick.lsp('references'), 'Go to references')
 keymap.nmap('<leader>gi', pick.lsp('implementation'), 'Go to implementations')
@@ -42,5 +46,8 @@ keymap.nmap('<leader>ss', pick.lsp('document_symbol'), 'Buffer symbols')
 keymap.nmap('<leader>sS', pick.lsp('workspace_symbol_live'), 'Workspace symbols')
 keymap.nmap('<leader>sd', pick.diagnostic('current'), 'Buffer diagnostics')
 keymap.nmap('<leader>sD', pick.diagnostic('all'), 'Workspace diagnostics')
+keymap.nmap('<leader>sq', pick.list('quickfix'), 'Quickfix list')
 keymap.nmap('<leader>sG', pick.b.grep_live, 'Grep live')
 keymap.nmap('<leader>sR', pick.b.resume, 'Resume')
+
+return pick

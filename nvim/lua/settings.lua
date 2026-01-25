@@ -3,13 +3,10 @@ local g, o = vim.g, vim.o
 g.mapleader = ' '
 g.maplocalleader = ' '
 g.winborder = "rounded"
+
 o.number = true
 o.relativenumber = true
 o.mouse = 'a'
-o.shiftwidth = 4
-o.softtabstop = 2
-o.expandtab = true
-o.smarttab = true
 o.splitright = true
 o.splitbelow = true
 o.signcolumn = "yes"
@@ -31,9 +28,28 @@ o.inccommand = 'split'
 o.updatetime = 250
 o.cursorline = true
 o.scrolloff = 10
+o.ignorecase = true
+o.smartcase = true
+o.breakindent = true
 
 vim.diagnostic.config({
-    virtual_text = true
+    severity_sort = true,
+    float = { border = 'rounded', source = 'if_many' },
+    underline = { severity = vim.diagnostic.severity.ERROR },
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = '󰅚 ',
+            [vim.diagnostic.severity.WARN] = '󰀪 ',
+            [vim.diagnostic.severity.INFO] = '󰋽 ',
+            [vim.diagnostic.severity.HINT] = '󰌶 ',
+        },
+    },
+    virtual_text = {
+        current_line = false
+    },
+    virtual_lines = {
+        current_line = true
+    }
 })
 
 vim.api.nvim_create_autocmd('TextYankPost', {

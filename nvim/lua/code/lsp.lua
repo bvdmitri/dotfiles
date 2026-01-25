@@ -16,3 +16,5 @@ require('mason-lspconfig').setup({
         'clangd'
     }
 })
+
+require('code.lsp.lua')

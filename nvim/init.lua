@@ -9,6 +9,8 @@ vim.pack.add({
 require('settings')
 require('colorscheme')
 require('keymap')
+require('explorer')
 require('search')
 require('code')
 require('miscellaneous')
+

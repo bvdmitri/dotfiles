@@ -7,7 +7,12 @@ vim.pack.add({
     { src = gh('nmac427/guess-indent.nvim') },
 })
 
-require('mini.indentscope').setup()
+require('mini.indentscope').setup({
+    draw = {
+        delay = 0,
+        animation = require('mini.indentscope').gen_animation.none()
+    }
+})
 require('mini.icons').setup()
 require('mini.pairs').setup()
 require('mini.surround').setup()

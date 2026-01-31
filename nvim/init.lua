@@ -11,6 +11,7 @@ require('colorscheme')
 require('keymap')
 require('explorer')
 require('search')
+require('git')
 require('code')
 require('miscellaneous')
 

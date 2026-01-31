@@ -54,5 +54,7 @@ require('mini.icons').setup()
 require('mini.pairs').setup()
 require('mini.surround').setup()
 require('mini.statusline').setup()
-require('mini.notify').setup()
+require('mini.notify').setup({
+    lsp_progress = { enable = false }
+})
 require('guess-indent').setup()

@@ -9,6 +9,7 @@ vim.pack.add({
     { src = gh('nvim-mini/mini.statusline') },
     { src = gh('nvim-mini/mini.notify') },
     { src = gh('nmac427/guess-indent.nvim') },
+    { src = gh('chrisgrieser/nvim-early-retirement') },
 })
 
 local keymap = require('keymap')
@@ -63,3 +64,4 @@ require('mini.notify').setup({
     window = { config = window_bottom_right_corner }
 })
 require('guess-indent').setup()
+require('early-retirement').setup({})

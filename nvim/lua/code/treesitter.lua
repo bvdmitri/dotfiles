@@ -13,10 +13,12 @@ NvimTreesitter.install({
     'vim',
     'vimdoc',
     'c',
-    'diff',
     'html',
     'lua',
     'markdown',
+    'diff',
+    'git_rebase',
+    'gitcommit'
 })
 
 NvimTreesitter.update()

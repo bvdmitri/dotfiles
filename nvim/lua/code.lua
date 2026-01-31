@@ -1,5 +1,6 @@
 require('code.treesitter')
 require('code.lsp')
+require('code.tests')
 require('code.dap')
 require('code.snippets')
 require('code.completion')

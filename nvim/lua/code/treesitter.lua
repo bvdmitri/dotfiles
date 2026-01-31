@@ -15,6 +15,7 @@ NvimTreesitter.install({
     'c',
     'html',
     'lua',
+    'julia',
     'markdown',
     'diff',
     'git_rebase',

@@ -43,10 +43,8 @@ vim.api.nvim_set_hl(0, 'MiniJump2dSpotUnique', { fg = 'White', undercurl = true 
 vim.api.nvim_set_hl(0, 'MiniJump2dSpotAhead', { fg = 'White', undercurl = true })
 local MiniJump2d = require('mini.jump2d')
 MiniJump2d.setup({
-    view = {
-        dim = true,
-        n_steps_ahead = 1
-    }
+    view = { dim = true, n_steps_ahead = 1 },
+    mappings = { start_jumping = '' }
 })
 keymap.nmap('\\j', MiniJump2d.start, 'Jump anywhere on the screen')
 -- The rest of miscellaneous

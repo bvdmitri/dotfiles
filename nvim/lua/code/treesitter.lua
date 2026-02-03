@@ -19,7 +19,8 @@ NvimTreesitter.install({
     'markdown',
     'diff',
     'git_rebase',
-    'gitcommit'
+    'gitcommit',
+    'latex'
 })
 
 NvimTreesitter.update()

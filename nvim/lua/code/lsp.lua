@@ -13,8 +13,10 @@ require('mason-lspconfig').setup({
         'eslint',
         'basedpyright',
         'ruff',
-        'clangd'
+        'clangd',
+        'texlab'
     }
 })
 
 require('code.lsp.lua')
+require('code.lsp.texlab')

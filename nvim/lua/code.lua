@@ -9,7 +9,7 @@ local keymap = require('keymap')
 
 keymap.add_group('Code', '<leader>c')
 
-function open_lsp_log()
+local function open_lsp_log()
   vim.cmd('tabnew ' .. vim.lsp.log.get_filename())
 end
 

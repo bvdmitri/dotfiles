@@ -6,6 +6,10 @@ g.winborder = "rounded"
 
 o.number = true
 o.relativenumber = true
+o.shiftwidth = 4
+o.softtabstop = 2
+o.expandtab = true
+o.smarttab = true
 o.mouse = 'a'
 o.splitright = true
 o.splitbelow = true

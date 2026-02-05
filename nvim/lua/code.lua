@@ -4,7 +4,7 @@ require('code.tests')
 require('code.dap')
 require('code.snippets')
 require('code.completion')
-require('code.outline')
+require('code.aerial')
 
 local keymap = require('keymap')
 

@@ -48,12 +48,8 @@ vim.diagnostic.config({
             [vim.diagnostic.severity.HINT] = '󰌶',
         },
     },
-    virtual_text = {
-        current_line = false
-    },
-    virtual_lines = {
-        current_line = true
-    }
+    virtual_text = true,
+    virtual_lines = false
 })
 
 vim.api.nvim_create_autocmd('TextYankPost', {

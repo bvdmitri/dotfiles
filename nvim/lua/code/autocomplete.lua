@@ -13,7 +13,9 @@ BlinkCmp.setup({
         preset = 'enter',
         ['<C-y>'] = { 'accept', 'fallback' },
         ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
-        ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' }
+        ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
+        ['<Up>'] = {'scroll_documentation_up', 'scroll_signature_up', 'fallback'},
+        ['<Down>'] = {'scroll_documentation_down', 'scroll_signature_down', 'fallback'}
     },
     fuzzy = { implementation = 'rust' },
     signature = { enabled = true }

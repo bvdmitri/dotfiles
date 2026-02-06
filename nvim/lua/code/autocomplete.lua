@@ -3,6 +3,7 @@ vim.pack.add({
         src = gh('saghen/blink.cmp'),
         version = vim.version.range('1.0.0 - 2.0.0')
     },
+    { src = gh('rafamadriz/friendly-snippets') },
 })
 
 local BlinkCmp = require('blink.cmp')
@@ -15,6 +16,7 @@ BlinkCmp.setup({
         ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' }
     },
     fuzzy = { implementation = 'rust' },
+    signature = { enabled = true }
 })
 
 local keymap = require('keymap')
@@ -28,5 +30,6 @@ local function toggle_documentation()
 end
 
 keymap.imap('<C-x><C-h>', toggle_documentation, 'Toggle autocomplete docs')
+keymap.imap('<C-x><C-a>', BlinkCmp.show_signature, 'Toggle autocomplete signature')
 
 vim.lsp.config('*', { capabilities = BlinkCmp.get_lsp_capabilities() })

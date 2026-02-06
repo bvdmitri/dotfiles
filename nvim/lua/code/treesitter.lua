@@ -1,5 +1,6 @@
 vim.pack.add({
     { src = gh('nvim-treesitter/nvim-treesitter') },
+    { src = gh('nvim-treesitter/nvim-treesitter-context') },
 })
 
 local NvimTreesitter = require('nvim-treesitter')
@@ -24,3 +25,15 @@ NvimTreesitter.install({
 })
 
 NvimTreesitter.update()
+
+local TreesitterContext = require('treesitter-context')
+
+TreesitterContext.setup()
+
+local keymap = require('keymap')
+
+local function jump_to_context()
+    TreesitterContext.go_to_context(vim.v.count1)
+end
+
+keymap.nmap('[c', jump_to_context, 'Jump up to the context')

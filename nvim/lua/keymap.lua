@@ -51,7 +51,6 @@ keymap.nmap('<A-l>', ':vertical resize +4<CR>', 'Make window larger vertically')
 
 keymap.tmap('\\d', '<C-\\><C-N>', 'Detach from terminal input mode')
 keymap.tmap('<Esc><Esc>', '<C-\\><C-N>', 'Detach from terminal input mode')
-keymap.imap('<C-x><C-x>', '<C-x><C-o>', 'Open omni-completion')
 
 keymap.nmap('<leader>-', ':split<CR>', 'Split window below')
 keymap.nmap('<leader>|', ':vsplit<CR>', 'Split window right')

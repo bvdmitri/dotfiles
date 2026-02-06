@@ -3,7 +3,7 @@ require('code.lsp')
 require('code.tests')
 require('code.dap')
 require('code.snippets')
-require('code.completion')
+require('code.autocomplete')
 require('code.aerial')
 
 local keymap = require('keymap')

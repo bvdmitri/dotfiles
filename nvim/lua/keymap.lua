@@ -39,10 +39,10 @@ function keymap.add_group(group_name, group_prefix)
 end
 
 -- Hard mode enabled
-vim.keymap.set({ 'n', 'c', 't', 'i', 'v' }, '<Up>', '<Nop>')
-vim.keymap.set({ 'n', 'c', 't', 'i', 'v' }, '<Down>', '<Nop>')
-vim.keymap.set({ 'n', 'c', 't', 'i', 'v' }, '<Left>', '<Nop>')
-vim.keymap.set({ 'n', 'c', 't', 'i', 'v' }, '<Right>', '<Nop>')
+vim.keymap.set({ 'n', 't', 'i', 'v' }, '<Up>', '<Nop>')
+vim.keymap.set({ 'n', 't', 'i', 'v' }, '<Down>', '<Nop>')
+vim.keymap.set({ 'n', 't', 'i', 'v' }, '<Left>', '<Nop>')
+vim.keymap.set({ 'n', 't', 'i', 'v' }, '<Right>', '<Nop>')
 
 -- Global group
 keymap.ntmap('<C-h>', '<CMD>wincmd h<CR>', 'Move to the left window')

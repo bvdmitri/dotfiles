@@ -14,9 +14,11 @@ require('mason-lspconfig').setup({
         'basedpyright',
         'ruff',
         'clangd',
-        'texlab'
+        'texlab',
+        -- 'julials' -- Mason is wrong for Julia, see the code.lsp.julia
     }
 })
 
 require('code.lsp.lua')
 require('code.lsp.texlab')
+require('code.lsp.julia')

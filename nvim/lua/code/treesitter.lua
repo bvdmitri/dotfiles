@@ -28,7 +28,9 @@ NvimTreesitter.update()
 
 local TreesitterContext = require('treesitter-context')
 
-TreesitterContext.setup()
+TreesitterContext.setup({
+    max_lines = 1
+})
 
 local keymap = require('keymap')
 

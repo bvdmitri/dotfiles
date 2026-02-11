@@ -59,9 +59,9 @@ local window_bottom_right_corner = function()
     local pad = vim.o.cmdheight + (has_statusline and 1 or 0)
     return { anchor = 'SE', col = vim.o.columns, row = vim.o.lines - pad }
 end
--- require('mini.notify').setup({
---     lsp_progress = { enable = false },
---     window = { config = window_bottom_right_corner }
--- })
+require('mini.notify').setup({
+    lsp_progress = { enable = false },
+    window = { config = window_bottom_right_corner }
+})
 require('guess-indent').setup()
 require('early-retirement').setup({})

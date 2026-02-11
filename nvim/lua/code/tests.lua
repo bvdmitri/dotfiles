@@ -7,7 +7,8 @@ local Neotest = require('neotest')
 
 Neotest.setup({
   adapters = {
-    require('neotest-python')
+    require('neotest-python'),
+    require('code.neotest.julia')
   },
   icons = {
     expanded = "",

@@ -16,5 +16,6 @@ require('explorer')
 require('search')
 require('git')
 require('code')
+require('notifications')
 require('miscellaneous')
 

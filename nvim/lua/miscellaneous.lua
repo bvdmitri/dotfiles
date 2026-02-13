@@ -3,9 +3,9 @@ vim.pack.add({
     { src = gh('nvim-mini/mini.sessions') },
     { src = gh('nvim-mini/mini.indentscope') },
     { src = gh('nvim-mini/mini.jump2d') },
+    { src = gh('nvim-mini/mini.pairs') },
     { src = gh('nvim-mini/mini.icons') },
     { src = gh('nvim-mini/mini.statusline') },
-    { src = gh('windwp/nvim-autopairs') },
     { src = gh('nmac427/guess-indent.nvim') },
     { src = gh('chrisgrieser/nvim-early-retirement') },
 })
@@ -34,22 +34,29 @@ require('mini.indentscope').setup({
         animation = require('mini.indentscope').gen_animation.none()
     }
 })
--- Custom settings for MiniJump2d
+
+-- MiniJump2d
+local MiniJump2d = require('mini.jump2d')
+
 -- The default colorscheme is quite bad IMO
 -- The new settings make the selesction standout and also undercurl
 vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { fg = 'White', standout = true })
 vim.api.nvim_set_hl(0, 'MiniJump2dSpotUnique', { fg = 'White', undercurl = true })
 vim.api.nvim_set_hl(0, 'MiniJump2dSpotAhead', { fg = 'White', undercurl = true })
-local MiniJump2d = require('mini.jump2d')
+
 MiniJump2d.setup({
     view = { dim = true, n_steps_ahead = 1 },
     mappings = { start_jumping = '' }
 })
+
 keymap.nmap('\\j', MiniJump2d.start, 'Jump anywhere on the screen')
+
+-- Autopairs
+require('mini.pairs').setup()
+
 -- The rest of miscellaneous
 require('mini.icons').setup()
 require('mini.statusline').setup()
-require('nvim-autopairs').setup()
 require('guess-indent').setup()
 require('early-retirement').setup({})
 

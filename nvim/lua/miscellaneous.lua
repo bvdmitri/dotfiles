@@ -4,11 +4,8 @@ vim.pack.add({
     { src = gh('nvim-mini/mini.indentscope') },
     { src = gh('nvim-mini/mini.jump2d') },
     { src = gh('nvim-mini/mini.icons') },
-    { src = gh('nvim-mini/mini.pairs') },
-    { src = gh('nvim-mini/mini.surround') },
     { src = gh('nvim-mini/mini.statusline') },
-    -- { src = gh('nvim-mini/mini.notify') },
-    { src = gh('j-hui/fidget.nvim') },
+    { src = gh('windwp/nvim-autopairs') },
     { src = gh('nmac427/guess-indent.nvim') },
     { src = gh('chrisgrieser/nvim-early-retirement') },
 })
@@ -51,8 +48,35 @@ MiniJump2d.setup({
 keymap.nmap('\\j', MiniJump2d.start, 'Jump anywhere on the screen')
 -- The rest of miscellaneous
 require('mini.icons').setup()
-require('mini.pairs').setup()
-require('mini.surround').setup()
 require('mini.statusline').setup()
+require('nvim-autopairs').setup()
 require('guess-indent').setup()
 require('early-retirement').setup({})
+
+local function pack_clean()
+    local active_plugins = {}
+    local unused_plugins = {}
+
+    for _, plugin in ipairs(vim.pack.get()) do
+        active_plugins[plugin.spec.name] = plugin.active
+    end
+
+    for _, plugin in ipairs(vim.pack.get()) do
+        if not active_plugins[plugin.spec.name] then
+            table.insert(unused_plugins, plugin.spec.name)
+        end
+    end
+
+    if #unused_plugins == 0 then
+        print("No unused plugins.")
+        return
+    end
+
+    local choice = vim.fn.confirm("Remove unused plugins?", "&Yes\n&No", 2)
+    if choice == 1 then
+        vim.pack.del(unused_plugins)
+    end
+end
+
+vim.api.nvim_create_user_command('PackClean', pack_clean, {})
+vim.api.nvim_create_user_command('PackUpdate', 'lua vim.pack.update()', {})

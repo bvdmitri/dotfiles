@@ -18,4 +18,3 @@ require('git')
 require('code')
 require('notifications')
 require('miscellaneous')
-

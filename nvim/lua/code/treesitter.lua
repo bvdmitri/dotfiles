@@ -7,7 +7,7 @@ vim.pack.add({
 local keymap = require('keymap')
 local NvimTreesitter = require('nvim-treesitter')
 
-NvimTreesitter.install({
+local TreesitterLanguages = {
     'rust',
     'javascript',
     'typescript',
@@ -24,9 +24,18 @@ NvimTreesitter.install({
     'git_rebase',
     'gitcommit',
     'latex'
-})
+}
 
+NvimTreesitter.install(TreesitterLanguages)
 NvimTreesitter.update()
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = TreesitterLanguages,
+    callback = function()
+        vim.treesitter.start()
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end,
+})
 
 -- Treesitter Context
 local TreesitterContext = require('treesitter-context')

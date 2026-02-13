@@ -125,7 +125,7 @@ function adapter.build_spec(args)
 
     local test_progress = notifications.progress.handle.create({
         title = test_name,
-        message = "Testing...",
+        message = "Test",
         lsp_client = { name = "Julia testitem runner" },
         percentage = 0
     })
@@ -144,7 +144,6 @@ end
 function adapter.results(spec, result, tree)
     if spec.context.progress ~= nil then
         spec.context.progress:report({
-            message = "Parsing test results...",
             percentage = 50
         })
     end

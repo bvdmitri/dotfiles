@@ -2,7 +2,6 @@ local lib = require("neotest.lib")
 local notifications = require('notifications')
 
 local adapter = {}
-local ns = vim.api.nvim_create_namespace("neotest-julia-testitem")
 
 adapter.name = "neotest-julia-testitem"
 adapter.utils = {}
@@ -26,7 +25,7 @@ function adapter.utils.read_tests_output(file_path_or_plain_string)
     return adapter.utils.strip_ansi_codes(output)
 end
 
-function adapter.utils.collect_failures(output)
+function adapter.utils.collect_errors(output)
     local failures = {}
 
     for _, pattern in ipairs({
@@ -51,7 +50,21 @@ function adapter.utils.collect_failures(output)
         table.insert(evaluated, val)
     end
 
-    return failures, expressions, evaluated
+    local errors = {}
+    for i, failure in ipairs(failures) do
+        local message = expressions[i] or "Test failed"
+        if evaluated[i] then
+            message = message .. "\nEvaluated: " .. evaluated[i]
+        end
+
+        table.insert(errors, {
+            line = failure.line,
+            message = message,
+            severity = vim.diagnostic.severity.ERROR,
+        })
+    end
+
+    return errors
 end
 
 function adapter.root(dir)
@@ -142,42 +155,15 @@ function adapter.build_spec(args)
 end
 
 function adapter.results(spec, result, tree)
+    local output = adapter.utils.read_tests_output(result.output)
+    local errors = adapter.utils.collect_errors(output)
+    local status = (#errors == 0) and "passed" or "failed"
+
     if spec.context.progress ~= nil then
         spec.context.progress:report({
-            percentage = 50
+            message = status:gsub("^%l", string.upper),
         })
-    end
-    local output = adapter.utils.read_tests_output(result.output)
-    local failures, expressions, evaluated =
-        adapter.utils.collect_failures(output)
-    local status = (#failures == 0) and "passed" or "failed"
-    local diagnostics = {}
-
-    for i, failure in ipairs(failures) do
-        local file = vim.fn.fnamemodify(failure.file, ":p")
-        local bufnr = vim.fn.bufnr(file, true)
-
-        if bufnr ~= -1 then
-            diagnostics[bufnr] = diagnostics[bufnr] or {}
-
-            local message = expressions[i] or "Test failed"
-            if evaluated[i] then
-                message = message .. "\nEvaluated: " .. evaluated[i]
-            end
-
-            table.insert(diagnostics[bufnr], {
-                lnum = failure.line,
-                col = 0,
-                message = message,
-                severity = vim.diagnostic.severity.ERROR,
-                source = "neotest-julia",
-            })
-        end
-    end
-
-    vim.diagnostic.reset(ns)
-    for bufnr, diags in pairs(diagnostics) do
-        vim.diagnostic.set(ns, bufnr, diags)
+        spec.context.progress:finish()
     end
 
     local results = {}
@@ -191,17 +177,10 @@ function adapter.results(spec, result, tree)
             results[data.id] = {
                 status = status,
                 output = result.output,
-                short = output:sub(1, 128),
-                location = (#failures > 0) and {
-                    path = vim.fn.fnamemodify(failures[1].file, ":p"),
-                    line = failures[1].line,
-                } or nil,
+                short  = (#errors > 0) and errors[1].message or nil,
+                errors = errors,
             }
         end
-    end
-
-    if spec.context.progress ~= nil then
-        spec.context.progress:finish()
     end
 
     return results

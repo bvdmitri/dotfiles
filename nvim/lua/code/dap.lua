@@ -16,6 +16,7 @@ require("nvim-dap-virtual-text").setup()
 
 require('code.dap.cpp')
 require('code.dap.python')
+require('code.dap.julia')
 
 local dap = require('dap')
 local dapui = require("dapui")

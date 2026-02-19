@@ -1,9 +1,11 @@
 local dap = require('dap')
 
+-- use `xcrun -f lldb-dap` to find the lldb-dap
 dap.adapters.lldb = {
     name = 'lldb',
     type = 'executable',
-    command = 'lldb-dap'
+    -- command = 'lldb-dap',
+    command = '/Library/Developer/CommandLineTools/usr/bin/lldb-dap',
 }
 
 local function dap_cpp_pick_program()

@@ -123,7 +123,6 @@ function adapter.build_spec(args)
     local test_command = {
         "julia",
         "--project=" .. root,
-        "--compile=min",
         "--startup-file=no",
         "--threads=2,2",
         "--gcthreads=2,1",

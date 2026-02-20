@@ -1,5 +1,6 @@
 vim.pack.add({
-    { src = gh('olimorris/codecompanion.nvim') }
+    { src = gh('olimorris/codecompanion.nvim') },
+    { src = gh('ravitemer/codecompanion-history.nvim') }
 })
 
 local companion = require('codecompanion')
@@ -15,7 +16,15 @@ companion.setup({
         }
     },
     interactions = {
-        chat = { adapter = "qwen_code" },
+        chat = {
+            adapter = "qwen_code",
+            keymaps = {
+                clear = {
+                    modes = { n = 'gq' },
+                    opts = {}
+                }
+            }
+        },
         inline = {
             adapter = { name = "openai", model = "gpt-5-nano" }
         },
@@ -57,6 +66,26 @@ companion.setup({
             end,
 
         }
+    },
+    extensions = {
+        history = {
+            enable = true,
+            opts = {
+                keymap = nil,
+                picker = 'default',
+                picker_keymaps = {
+                    delete = { n = 'd', i = '<C-d>' }
+                },
+                title_generation_opts = {
+                    adapter = "openai",
+                    model = "gpt-5-nano",
+                    refresh_every_n_prompts = 3
+                },
+                expiration_days = 14,
+                delete_on_clearing_chat = true,
+                continue_last_chat = true
+            }
+        }
     }
 })
 
@@ -76,6 +105,7 @@ keymap.nvmap('<leader>ai', '<CMD>CodeCompanion<CR>', 'Coding Assistant Inline')
 keymap.nmap('<leader>aa', toggle_companion("float"), 'Toggle Coding Assistant Chat (floating)')
 keymap.nmap('<leader>av', toggle_companion("vertical"), 'Toggle Coding Assistant Chat (vertical)')
 keymap.vmap('<leader>ae', '<CMD>CodeCompanion /explain<CR>', 'Coding Assistant /explain')
+keymap.nmap('<leader>ah', '<CMD>CodeCompanionHistory<CR>', 'Coding Assistant Chat History')
 
 -- Fidget <-> Companion integration
 

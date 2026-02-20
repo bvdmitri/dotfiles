@@ -3,7 +3,6 @@ vim.pack.add({
 })
 
 local companion = require('codecompanion')
-local default_adapter = { name = "openai", model = "gpt-4" }
 
 companion.setup({
     display = {
@@ -16,13 +15,51 @@ companion.setup({
         }
     },
     interactions = {
-        chat = { adapter = "codex" },
+        chat = { adapter = "qwen_code" },
         inline = {
-            adapter = default_adapter,
+            adapter = { name = "openai", model = "gpt-5-nano" }
         },
-        cmd = { adapter = default_adapter },
+        cmd = { name = "openai", model = "gpt-5-nano" },
     },
+    adapters = {
+        acp = {
+            qwen_code = function()
+                return require('codecompanion.adapters').extend('gemini_cli', {
+                    name = 'qwen_code',
+                    formatted_name = 'Qwen Code',
+                    commands = {
+                        default = {
+                            'qwen',
+                            '--experimental-acp',
+                        },
+                        yolo = {
+                            'qwen',
+                            '--yolo',
+                            '--experimental-acp',
+                        },
+                    },
+                    defaults = {
+                        auth_method = 'qwen-oauth',
+                        oauth_credentials_path = vim.fs.abspath '~/.qwen/oauth_creds.json',
+                    },
+                    handlers = {
+                        -- do not auth again if oauth_credentials is already exists
+                        auth = function(self)
+                            local oauth_credentials_path =
+                                self.defaults.oauth_credentials_path
+                            return (
+                                oauth_credentials_path
+                                and vim.fn.filereadable(oauth_credentials_path)
+                            ) == 1
+                        end,
+                    },
+                })
+            end,
+
+        }
+    }
 })
+
 
 local keymap = require('keymap')
 

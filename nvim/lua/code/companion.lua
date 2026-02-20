@@ -22,16 +22,11 @@ companion.setup({
         chat = {
             adapter = "qwen_code",
             keymaps = {
-                clear = {
-                    modes = { n = 'gq' },
-                    opts = {}
-                }
+                clear = { modes = { n = 'gq' }, opts = {} }
             }
         },
-        inline = {
-            adapter = { name = "openai", model = "gpt-5-nano" }
-        },
-        cmd = { name = "openai", model = "gpt-5-nano" },
+        inline = { adapter = { name = "openai", model = "gpt-5-nano" } },
+        cmd = { adapter = { name = "openai", model = "gpt-5-nano" } },
     },
     adapters = {
         acp = {
@@ -40,15 +35,7 @@ companion.setup({
                     name = 'qwen_code',
                     formatted_name = 'Qwen Code',
                     commands = {
-                        default = {
-                            'qwen',
-                            '--experimental-acp',
-                        },
-                        yolo = {
-                            'qwen',
-                            '--yolo',
-                            '--experimental-acp',
-                        },
+                        default = { 'qwen', '--experimental-acp' },
                     },
                     defaults = {
                         auth_method = 'qwen-oauth',
@@ -153,7 +140,7 @@ end
 
 function CodeCompanionProgress:create_progress_handle(request)
     return progress.handle.create({
-        title = " Requesting assistance (" .. request.data.interaction .. ")",
+        title = "󱙺 Code Companion (" .. request.data.interaction .. ")",
         message = "In progress...",
         lsp_client = {
             name = CodeCompanionProgress:llm_role_title(request.data.adapter),
@@ -202,4 +189,3 @@ vim.api.nvim_create_autocmd({ "User" }, {
         end
     end,
 })
-

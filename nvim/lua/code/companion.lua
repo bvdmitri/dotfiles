@@ -82,7 +82,8 @@ companion.setup({
                 title_generation_opts = {
                     adapter = "openai",
                     model = "gpt-5-nano",
-                    refresh_every_n_prompts = 3
+                    refresh_every_n_prompts = 3,
+                    max_refreshes = 99,
                 },
                 expiration_days = 14,
                 delete_on_clearing_chat = true

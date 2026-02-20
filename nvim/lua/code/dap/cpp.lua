@@ -1,12 +1,26 @@
 local dap = require('dap')
 
--- use `xcrun -f lldb-dap` to find the lldb-dap
-dap.adapters.lldb = {
-    name = 'lldb',
-    type = 'executable',
-    -- command = 'lldb-dap',
-    command = '/Library/Developer/CommandLineTools/usr/bin/lldb-dap',
-}
+local function find_lldb_dap()
+    local lldb_dap = vim.fn.exepath('lldb-dap')
+    if lldb_dap ~= '' then
+        return lldb_dap
+    end
+
+    local typical_paths = {
+        '/Library/Developer/CommandLineTools/usr/bin/lldb-dap',
+        '/usr/bin/lldb-dap',
+        '/usr/local/bin/lldb-dap',
+        '/usr/lib/llvm/bin/lldb-dap',
+    }
+
+    for _, path in ipairs(typical_paths) do
+        if vim.uv.fs_stat(path) then
+            return path
+        end
+    end
+
+    return nil
+end
 
 local function dap_cpp_pick_program()
     local root = vim.fn.getcwd()
@@ -70,6 +84,22 @@ local function dap_cpp_pick_program()
 
     return coroutine.yield()
 end
+
+local lldb_dap_path = find_lldb_dap()
+
+if not lldb_dap_path then
+    vim.notify(
+        'lldb-dap not found. C++ debugging may not work.\n' ..
+        'Install LLVM or Xcode Command Line Tools.',
+        vim.log.levels.WARN
+    )
+end
+
+dap.adapters.lldb = {
+    name = 'lldb',
+    type = 'executable',
+    command = lldb_dap_path or 'lldb-dap',
+}
 
 dap.configurations.cpp = {
     {

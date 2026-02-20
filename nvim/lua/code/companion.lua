@@ -108,7 +108,31 @@ keymap.nvmap('<leader>ai', '<CMD>CodeCompanion<CR>', 'Coding Assistant Inline')
 keymap.nmap('<leader>aa', toggle_companion("float"), 'Toggle Coding Assistant Chat (floating)')
 keymap.nmap('<leader>av', toggle_companion("vertical"), 'Toggle Coding Assistant Chat (vertical)')
 keymap.vmap('<leader>ae', '<CMD>CodeCompanion /explain<CR>', 'Coding Assistant /explain')
+
+-- History related commands
+local codecompanion_history = require('codecompanion._extensions.history')
 keymap.nmap('<leader>ah', '<CMD>CodeCompanionHistory<CR>', 'Coding Assistant Chat History')
+
+vim.api.nvim_create_user_command("CodeCompanionHistoryClear", function()
+    local filter_fn = function(_) return true end
+    local chats = codecompanion_history.exports.get_chats(filter_fn)
+    local count = vim.tbl_count(chats)
+
+    if count == 0 then
+        vim.notify("No chat history to clear", vim.log.levels.INFO)
+        return
+    end
+
+    local confirm = vim.fn.confirm("Delete " .. count .. " chat(s)?", "&Yes\n&No", 2)
+    if confirm ~= 1 then
+        return
+    end
+
+    for chat_id, _ in vim.spairs(chats) do
+        codecompanion_history.exports.delete_chat(chat_id)
+    end
+    vim.notify("Deleted " .. count .. " chat(s)", vim.log.levels.INFO)
+end, { desc = "Clear the chat history of code companion" })
 
 -- Fidget <-> Companion integration
 
@@ -178,3 +202,4 @@ vim.api.nvim_create_autocmd({ "User" }, {
         end
     end,
 })
+

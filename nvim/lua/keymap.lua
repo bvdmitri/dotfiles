@@ -28,6 +28,14 @@ function keymap.tmap(mapping, command, description)
     keymap.set('t', mapping, command, description)
 end
 
+function keymap.vmap(mapping, command, description)
+    keymap.set('v', mapping, command, description)
+end
+
+function keymap.nvmap(mapping, command, description)
+    keymap.set({ 'n', 'v' }, mapping, command, description)
+end
+
 function keymap.imap(mapping, command, description)
     keymap.set('i', mapping, command, description)
 end

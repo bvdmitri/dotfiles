@@ -8,6 +8,7 @@ vim.pack.add({
     { src = gh('nvim-mini/mini.statusline') },
     { src = gh('nmac427/guess-indent.nvim') },
     { src = gh('chrisgrieser/nvim-early-retirement') },
+    { src = gh('OXY2DEV/markview.nvim') },
 })
 
 local keymap = require('keymap')
@@ -59,6 +60,14 @@ require('mini.icons').setup()
 require('mini.statusline').setup()
 require('guess-indent').setup()
 require('early-retirement').setup({})
+
+-- Markdown preview
+require('markview').setup({
+    preview = {
+        filetypes = { "markdown", "codecompanion" },
+        ignore_buftypes = {}
+    }
+})
 
 local function pack_clean()
     local active_plugins = {}

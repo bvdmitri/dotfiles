@@ -4,7 +4,7 @@ require('code.tests')
 require('code.dap')
 require('code.autocomplete')
 require('code.aerial')
-require('code.assistant')
+require('code.companion')
 
 local keymap = require('keymap')
 

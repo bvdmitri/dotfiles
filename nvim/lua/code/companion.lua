@@ -10,10 +10,13 @@ companion.setup({
         chat = {
             window = {
                 layout = "float",
-                width = 0.7,
-                border = "rounded"
+                width = 0.33,
+                height = 0.95,
+                border = "rounded",
+                row = 0,
+                col = 999,
             }
-        }
+        },
     },
     interactions = {
         chat = {
@@ -95,7 +98,7 @@ keymap.add_group('Coding Assistant', '<leader>a')
 
 function toggle_companion(layout)
     return function()
-        companion.toggle({ window_opts = { layout = layout, width = 0.6 } })
+        companion.toggle({ window_opts = { layout = layout } })
     end
 end
 

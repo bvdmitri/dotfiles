@@ -14,7 +14,8 @@ require('fidget').setup({
         window = {
             border = "rounded",
             winblend = 10,
-            max_width = 60
+            max_width = 60,
+            zindex = 55
         }
     },
 })

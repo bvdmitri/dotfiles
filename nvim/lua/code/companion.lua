@@ -82,8 +82,7 @@ companion.setup({
                     refresh_every_n_prompts = 3
                 },
                 expiration_days = 14,
-                delete_on_clearing_chat = true,
-                continue_last_chat = true
+                delete_on_clearing_chat = true
             }
         }
     }

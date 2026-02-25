@@ -24,7 +24,8 @@ local TreesitterLanguages = {
     'git_rebase',
     'gitcommit',
     'latex',
-    'yaml'
+    'yaml',
+    'typst'
 }
 
 NvimTreesitter.install(TreesitterLanguages)

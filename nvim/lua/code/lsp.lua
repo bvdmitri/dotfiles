@@ -15,10 +15,12 @@ require('mason-lspconfig').setup({
         'ruff',
         'clangd',
         'texlab',
-        -- 'julials' -- Mason is wrong for Julia, see the code.lsp.julia
+        'tinymist'      -- Typst LSP
+         -- 'julials'   -- Mason is wrong for Julia, see the code.lsp.julia
     }
 })
 
 require('code.lsp.lua')
 require('code.lsp.texlab')
+require('code.lsp.typst')
 require('code.lsp.julia')

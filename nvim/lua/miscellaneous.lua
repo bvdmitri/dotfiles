@@ -68,6 +68,7 @@ require('markview').setup({
         ignore_buftypes = {}
     }
 })
+keymap.nmap('\\m', '<CMD>Markview<CR>', 'Toggle markdown preview')
 
 local function pack_clean()
     local active_plugins = {}

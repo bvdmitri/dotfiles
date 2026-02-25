@@ -13,5 +13,13 @@ MiniFiles.setup({
 
 local keymap = require('keymap')
 
-keymap.nmap('<leader>e', MiniFiles.open, 'Explorer MiniFiles (resume)')
-keymap.nmap('<leader>E', function() MiniFiles.open(nil, false) end, 'Explorer MiniFiles (cwd)')
+local function open_directory_of_current_file()
+    MiniFiles.open(vim.api.nvim_buf_get_name(0))
+end
+
+local function open_directory_of_current_project()
+    MiniFiles.open(nil, false)
+end
+
+keymap.nmap('<leader>e', open_directory_of_current_file, 'Explorer MiniFiles (resume)')
+keymap.nmap('<leader>E', open_directory_of_current_project, 'Explorer MiniFiles (cwd)')

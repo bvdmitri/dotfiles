@@ -84,7 +84,7 @@ local keymap = require('keymap')
 
 keymap.add_group('Coding Assistant', '<leader>a')
 
-function toggle_companion(layout)
+local function toggle_companion(layout)
     return function()
         companion.toggle({ window_opts = { layout = layout } })
     end

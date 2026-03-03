@@ -2,7 +2,6 @@ vim.pack.add({
     { src = gh('nvim-mini/mini.starter') },
     { src = gh('nvim-mini/mini.sessions') },
     { src = gh('nvim-mini/mini.indentscope') },
-    { src = gh('nvim-mini/mini.jump2d') },
     { src = gh('nvim-mini/mini.pairs') },
     { src = gh('nvim-mini/mini.icons') },
     { src = gh('nvim-mini/mini.statusline') },
@@ -35,22 +34,6 @@ require('mini.indentscope').setup({
         animation = require('mini.indentscope').gen_animation.none()
     }
 })
-
--- MiniJump2d
-local MiniJump2d = require('mini.jump2d')
-
--- The default colorscheme is quite bad IMO
--- The new settings make the selesction standout and also undercurl
-vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { fg = 'White', standout = true })
-vim.api.nvim_set_hl(0, 'MiniJump2dSpotUnique', { fg = 'White', undercurl = true })
-vim.api.nvim_set_hl(0, 'MiniJump2dSpotAhead', { fg = 'White', undercurl = true })
-
-MiniJump2d.setup({
-    view = { dim = true, n_steps_ahead = 1 },
-    mappings = { start_jumping = '' }
-})
-
-keymap.nmap('\\j', MiniJump2d.start, 'Jump anywhere on the screen')
 
 -- Autopairs
 require('mini.pairs').setup()

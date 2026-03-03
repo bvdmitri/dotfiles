@@ -16,6 +16,7 @@ require('settings')        -- Basic editor settings (indent, line numbers, etc.)
 require('colorscheme')     -- Color scheme configuration
 require('keymap')          -- Key bindings and mappings
 require('explorer')        -- File explorer setup
+require('navigation')      -- Navigation/jumps within or between buffers
 require('search')          -- Search functionality (find, grep, etc.)
 require('git')             -- Git integration
 require('code')            -- Code editing features (LSP, completion, etc.)

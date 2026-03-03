@@ -31,6 +31,7 @@ recall.setup({
 })
 
 -- Overwrite the recall navigation to use the opened buffer instead
+-- see https://github.com/fnune/recall.nvim/issues/14
 require('recall.navigation').goto_mark = function(direction)
   local mark = require('recall.navigation').find_mark(direction)
   if mark then

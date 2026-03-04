@@ -1,6 +1,6 @@
 vim.pack.add({
     { src = gh('nvim-mini/mini.jump2d') },
-    { src = gh('fnune/recall.nvim') },
+    { src = gh('bvdmitri/recall.nvim'), version = 'reuse_opened_buffer' },
 })
 
 local keymap = require('keymap')
@@ -27,37 +27,9 @@ keymap.nmap('<leader>gj', MiniJump2d.start, 'Goto anywhere on the screen')
 local recall = require('recall')
 
 recall.setup({
-    sign_highlight = 'Green'
+    sign_highlight = 'Green',
+    reuse_opened_windows = true
 })
-
--- Overwrite the recall navigation to use the opened buffer instead
--- see https://github.com/fnune/recall.nvim/issues/14
-require('recall.navigation').goto_mark = function(direction)
-  local mark = require('recall.navigation').find_mark(direction)
-  if mark then
-    local bufnr = vim.fn.bufnr(mark.file)
-    if bufnr ~= -1 then
-      -- Buffer exists, check if it's already displayed in a window
-      local win_id = vim.fn.bufwinid(bufnr)
-      if win_id ~= -1 then
-        -- Buffer is visible, switch focus to that window
-        vim.api.nvim_set_current_win(win_id)
-        vim.api.nvim_win_set_cursor(win_id, { mark.pos[2], mark.pos[3] })
-      else
-        -- Buffer exists but not visible, switch to it
-        vim.cmd("silent buffer " .. bufnr)
-        vim.api.nvim_win_set_cursor(0, { mark.pos[2], mark.pos[3] })
-      end
-    else
-      -- Buffer not loaded, open it
-      vim.cmd("silent buffer " .. mark.file)
-      vim.api.nvim_win_set_cursor(0, { mark.pos[2], mark.pos[3] })
-    end
-  else
-    print("No global marks set")
-  end
-end
-
 
 keymap.nmap('mm', recall.toggle, 'Toggle a global mark')
 keymap.nmap('mc', recall.clear, 'Clear all global marks')

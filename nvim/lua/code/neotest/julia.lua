@@ -114,6 +114,7 @@ function adapter.build_spec(args)
 
     local file_path = position.path
     local root = adapter.root(file_path)
+    local package = root:match("([^/]+)%.jl$")
 
     if not root then
         error("Could not determine Julia project root")
@@ -128,11 +129,12 @@ function adapter.build_spec(args)
         "--gcthreads=2,1",
         "-e",
         string.format([[
+        using %q
         using TestItemRunner
         @run_package_tests(
             filter = ti -> ti.name == %q && occursin(ti.filename, %q)
         )
-        ]], test_name, file_path)
+        ]], package, test_name, file_path)
     }
 
     local test_progress = notifications.progress.handle.create({

@@ -140,7 +140,7 @@ function adapter.build_spec(args)
         using %s
         using TestItemRunner
         TestItemRunner.run_tests(
-            %q ,
+            %q;
             filter = ti -> ti.name == %q && occursin(ti.filename, %q)
         )
         ]], package, root, test_name, file_path)

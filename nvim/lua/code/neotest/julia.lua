@@ -40,6 +40,14 @@ function adapter.utils.collect_errors(output)
         end
     end
 
+    -- If output contains ERROR but no failures were captured, add a generic failure
+    if #failures == 0 and output:match("ERROR:") then
+        table.insert(failures, {
+            file = nil,
+            line = 0,
+        })
+    end
+
     local expressions = {}
     for expr in output:gmatch("Expression:%s*(.-)\n") do
         table.insert(expressions, expr)
@@ -129,12 +137,13 @@ function adapter.build_spec(args)
         "--gcthreads=2,1",
         "-e",
         string.format([[
-        using %q
+        using %s
         using TestItemRunner
-        @run_package_tests(
+        TestItemRunner.run_tests(
+            %q ,
             filter = ti -> ti.name == %q && occursin(ti.filename, %q)
         )
-        ]], package, test_name, file_path)
+        ]], package, root, test_name, file_path)
     }
 
     local test_progress = notifications.progress.handle.create({
@@ -188,3 +197,4 @@ function adapter.results(spec, result, tree)
 end
 
 return adapter
+

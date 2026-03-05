@@ -96,6 +96,16 @@ keymap.nmap('<leader>aa', toggle_companion("float"), 'Toggle Coding Assistant Ch
 keymap.nmap('<leader>av', toggle_companion("vertical"), 'Toggle Coding Assistant Chat (vertical)')
 keymap.vmap('<leader>ae', '<CMD>CodeCompanion /explain<CR>', 'Coding Assistant /explain')
 
+-- Chat related commands
+keymap.nmap('<leader>at', '<CMD>CodeCompanionStopLastChat', 'Stop executing the last chat')
+
+vim.api.nvim_create_user_command("CodeCompanionStopLastChat", function()
+    local last_chat = companion.last_chat()
+    if last_chat ~= nil then
+        last_chat:stop()
+    end
+end, { desc = 'Stop executing the last CodeCompanion chat' })
+
 -- History related commands
 local codecompanion_history = require('codecompanion._extensions.history')
 keymap.nmap('<leader>ah', '<CMD>CodeCompanionHistory<CR>', 'Coding Assistant Chat History')

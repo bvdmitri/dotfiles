@@ -1,6 +1,6 @@
 vim.pack.add({
     { src = gh('nvim-mini/mini.jump2d') },
-    { src = gh('bvdmitri/recall.nvim'), version = 'reuse_opened_buffer' },
+    { src = gh('fnune/recall.nvim') },
 })
 
 local keymap = require('keymap')

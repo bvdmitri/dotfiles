@@ -41,7 +41,7 @@ function adapter.utils.collect_errors(output)
     end
 
     -- If output contains ERROR but no failures were captured, add a generic failure
-    if #failures == 0 and output:match("ERROR:") then
+    if #failures == 0 and (output:match("ERROR:") or output:match("Got exception outside of a @test")) then
         table.insert(failures, {
             file = nil,
             line = 0,
@@ -147,11 +147,12 @@ function adapter.build_spec(args)
     }
 
     local test_progress = notifications.progress.handle.create({
-        title = test_name,
+        title = #test_name > 32 and test_name:sub(1, 32) .. '...' or test_name,
         message = "Test",
         lsp_client = { name = "Julia testitem runner" },
         percentage = 0
     })
+
 
     return {
         command = test_command,
@@ -197,4 +198,3 @@ function adapter.results(spec, result, tree)
 end
 
 return adapter
-

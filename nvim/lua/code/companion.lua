@@ -1,82 +1,30 @@
 vim.pack.add({
-    { src = gh('olimorris/codecompanion.nvim') },
-    { src = gh('ravitemer/codecompanion-history.nvim') }
+    { src = gh('greggh/claude-code.nvim') },
 })
 
-local companion = require('codecompanion')
+local claude = require('claude-code')
 
-companion.setup({
-    display = {
-        chat = {
-            window = {
-                layout = "float",
-                width = 0.33,
-                height = 0.95,
-                border = "rounded",
-                row = 0,
-                col = 999,
+claude.setup({
+    keymaps = {
+        toggle = {
+            normal = '<leader>aa',
+            variants = {
+                continue = '<leader>ac',
+                verbose = '<leader>av'
             }
-        },
-    },
-    interactions = {
-        chat = {
-            adapter = "qwen_code",
-            keymaps = {
-                clear = { modes = { n = 'gq' }, opts = {} }
-            }
-        },
-        inline = { adapter = { name = "openai", model = "gpt-5-nano" } },
-        cmd = { adapter = { name = "openai", model = "gpt-5-nano" } },
-    },
-    adapters = {
-        acp = {
-            qwen_code = function()
-                return require('codecompanion.adapters').extend('gemini_cli', {
-                    name = 'qwen_code',
-                    formatted_name = 'Qwen Code',
-                    commands = {
-                        default = { 'qwen', '--experimental-acp' },
-                    },
-                    defaults = {
-                        auth_method = 'qwen-oauth',
-                        oauth_credentials_path = vim.fs.abspath '~/.qwen/oauth_creds.json',
-                    },
-                    handlers = {
-                        -- do not auth again if oauth_credentials is already exists
-                        auth = function(self)
-                            local oauth_credentials_path =
-                                self.defaults.oauth_credentials_path
-                            return (
-                                oauth_credentials_path
-                                and vim.fn.filereadable(oauth_credentials_path)
-                            ) == 1
-                        end,
-                    },
-                })
-            end,
-
         }
     },
-    extensions = {
-        history = {
-            enable = true,
-            opts = {
-                keymap = nil,
-                picker = 'default',
-                picker_keymaps = {
-                    delete = { n = 'd', i = '<C-d>' }
-                },
-                title_generation_opts = {
-                    adapter = "openai",
-                    model = "gpt-5-nano",
-                    refresh_every_n_prompts = 3,
-                    max_refreshes = 99,
-                },
-                expiration_days = 14,
-                delete_on_clearing_chat = true
-            }
-        }
-    }
+    window = {
+        position = "float",
+        float = {
+            width = "30%",
+            height = "100%",
+            row = 0,
+            col = 999,
+            relative = "editor",
+            border = "rounded",
+        },
+    },
 })
 
 
@@ -84,118 +32,19 @@ local keymap = require('keymap')
 
 keymap.add_group('Coding Assistant', '<leader>a')
 
-local function toggle_companion(layout)
-    return function()
-        companion.toggle({ window_opts = { layout = layout } })
-    end
-end
+keymap.nmap('<leader>aa', '<CMD>ClaudeCode<CR>', 'Toggle Code Companion')
+keymap.nmap('<leader>ar', '<CMD>ClaudeCodeResume<CR>', 'Display interactive conversation picker')
+keymap.nmap('<leader>ac', '<CMD>ClaudeCodeContinue<CR>', 'Resume the most recent conversation')
 
-keymap.nvmap('<leader>ac', '<CMD>CodeCompanionAction<CR>', 'Coding Assistant Actions')
-keymap.nvmap('<leader>ai', '<CMD>CodeCompanion<CR>', 'Coding Assistant Inline')
-keymap.nmap('<leader>aa', toggle_companion("float"), 'Toggle Coding Assistant Chat (floating)')
-keymap.nmap('<leader>av', toggle_companion("vertical"), 'Toggle Coding Assistant Chat (vertical)')
-keymap.vmap('<leader>ae', '<CMD>CodeCompanion /explain<CR>', 'Coding Assistant /explain')
-
--- Chat related commands
-keymap.nmap('<leader>at', '<CMD>CodeCompanionStopLastChat', 'Stop executing the last chat')
-
-vim.api.nvim_create_user_command("CodeCompanionStopLastChat", function()
-    local last_chat = companion.last_chat()
-    if last_chat ~= nil then
-        last_chat:stop()
-    end
-end, { desc = 'Stop executing the last CodeCompanion chat' })
-
--- History related commands
-local codecompanion_history = require('codecompanion._extensions.history')
-keymap.nmap('<leader>ah', '<CMD>CodeCompanionHistory<CR>', 'Coding Assistant Chat History')
-
-vim.api.nvim_create_user_command("CodeCompanionHistoryClear", function()
-    local filter_fn = function(_) return true end
-    local chats = codecompanion_history.exports.get_chats(filter_fn)
-    local count = vim.tbl_count(chats)
-
-    if count == 0 then
-        vim.notify("No chat history to clear", vim.log.levels.INFO)
-        return
-    end
-
-    local confirm = vim.fn.confirm("Delete " .. count .. " chat(s)?", "&Yes\n&No", 2)
-    if confirm ~= 1 then
-        return
-    end
-
-    for chat_id, _ in vim.spairs(chats) do
-        codecompanion_history.exports.delete_chat(chat_id)
-    end
-    vim.notify("Deleted " .. count .. " chat(s)", vim.log.levels.INFO)
-end, { desc = "Clear the chat history of code companion" })
-
--- Fidget <-> Companion integration
-
-local progress = require("fidget.progress")
-local CodeCompanionProgress = {}
-
-CodeCompanionProgress.handles = {}
-
-function CodeCompanionProgress:store_progress_handle(id, handle)
-    CodeCompanionProgress.handles[id] = handle
-end
-
-function CodeCompanionProgress:pop_progress_handle(id)
-    local handle = CodeCompanionProgress.handles[id]
-    CodeCompanionProgress.handles[id] = nil
-    return handle
-end
-
-function CodeCompanionProgress:create_progress_handle(request)
-    return progress.handle.create({
-        title = "󱙺 Code Companion (" .. request.data.interaction .. ")",
-        message = "In progress...",
-        lsp_client = {
-            name = CodeCompanionProgress:llm_role_title(request.data.adapter),
-        },
-    })
-end
-
-function CodeCompanionProgress:llm_role_title(adapter)
-    local parts = {}
-    table.insert(parts, adapter.formatted_name)
-    if adapter.model and adapter.model ~= "" then
-        table.insert(parts, "(" .. adapter.model .. ")")
-    end
-    return table.concat(parts, " ")
-end
-
-function CodeCompanionProgress:report_exit_status(handle, request)
-    if request.data.status == "success" then
-        handle.message = "Completed"
-    elseif request.data.status == "error" then
-        handle.message = " Error"
-    else
-        handle.message = "󰜺 Cancelled"
-    end
-end
-
-local CodeCompanionFidgetHooks = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", {})
-
-vim.api.nvim_create_autocmd({ "User" }, {
-    pattern = "CodeCompanionRequestStarted",
-    group = CodeCompanionFidgetHooks,
-    callback = function(request)
-        local handle = CodeCompanionProgress:create_progress_handle(request)
-        CodeCompanionProgress:store_progress_handle(request.data.id, handle)
-    end,
-})
-
-vim.api.nvim_create_autocmd({ "User" }, {
-    pattern = "CodeCompanionRequestFinished",
-    group = CodeCompanionFidgetHooks,
-    callback = function(request)
-        local handle = CodeCompanionProgress:pop_progress_handle(request.data.id)
-        if handle then
-            CodeCompanionProgress:report_exit_status(handle, request)
-            handle:finish()
+vim.api.nvim_create_autocmd("VimLeavePre", {
+    callback = function()
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.api.nvim_buf_is_valid(buf)
+                and vim.bo[buf].buftype == "terminal"
+                and (vim.api.nvim_buf_get_name(buf)):lower():find("claude")
+            then
+                vim.api.nvim_buf_delete(buf, { force = true })
+            end
         end
     end,
 })

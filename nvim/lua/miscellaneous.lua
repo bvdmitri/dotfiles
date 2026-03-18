@@ -46,6 +46,7 @@ require('early-retirement').setup({})
 
 -- Markdown preview
 require('render-markdown').setup({
+    enabled = false,
     file_types = { "markdown", "codecompanion" }
 })
 keymap.nmap('\\m', '<CMD>RenderMarkdown toggle<CR>', 'Toggle markdown preview')

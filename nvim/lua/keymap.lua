@@ -63,7 +63,7 @@ keymap.nmap('<A-j>', ':resize +4<CR>', 'Make window larger horizontally')
 keymap.nmap('<A-h>', ':vertical resize -4<CR>', 'Make window smaller vertically')
 keymap.nmap('<A-l>', ':vertical resize +4<CR>', 'Make window larger vertically')
 
-keymap.tmap('\\d', '<C-\\><C-N>', 'Detach from terminal input mode')
+keymap.tmap('\\d', '<CMD>bd!<CR>', 'Close terminal')
 keymap.tmap('<Esc><Esc>', '<C-\\><C-N>', 'Detach from terminal input mode')
 
 keymap.nmap('<leader>-', ':split<CR>', 'Split window below')
@@ -75,6 +75,7 @@ keymap.add_group('Utilities', '\\')
 keymap.nmap('\\]', ':e $MYVIMRC<CR>', 'Edit my Neovim config')
 keymap.nmap('\\h', ':noh<CR>', 'Clear search highlight')
 keymap.nmap('\\x', ':confirm quit<CR>', 'Confirm quit')
+keymap.nmap('\\d', ':bd<CR>', 'Delete buffer')
 
 
 local MiniKeymap = require('mini.keymap')

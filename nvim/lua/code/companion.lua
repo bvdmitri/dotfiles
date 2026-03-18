@@ -2,6 +2,11 @@ vim.pack.add({
     { src = gh('greggh/claude-code.nvim') },
 })
 
+
+local keymap = require('keymap')
+
+keymap.add_group('Coding Assistant', '<leader>a')
+
 local claude = require('claude-code')
 
 claude.setup({
@@ -10,9 +15,12 @@ claude.setup({
             normal = '<leader>aa',
             variants = {
                 continue = '<leader>ac',
-                verbose = '<leader>av'
+                verbose = '<leader>av',
+                resume = '<leader>ar'
             }
-        }
+        },
+        window_navigation = false,
+        scrolling = false
     },
     window = {
         position = "float",
@@ -26,15 +34,6 @@ claude.setup({
         },
     },
 })
-
-
-local keymap = require('keymap')
-
-keymap.add_group('Coding Assistant', '<leader>a')
-
-keymap.nmap('<leader>aa', '<CMD>ClaudeCode<CR>', 'Toggle Code Companion')
-keymap.nmap('<leader>ar', '<CMD>ClaudeCodeResume<CR>', 'Display interactive conversation picker')
-keymap.nmap('<leader>ac', '<CMD>ClaudeCodeContinue<CR>', 'Resume the most recent conversation')
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
     callback = function()

@@ -12,7 +12,6 @@ local claude = require('claude-code')
 claude.setup({
     keymaps = {
         toggle = {
-            normal = '<leader>aa',
             variants = {
                 continue = '<leader>ac',
                 verbose = '<leader>av',

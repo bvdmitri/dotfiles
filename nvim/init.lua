@@ -22,4 +22,5 @@ require('git')             -- Git integration
 require('code')            -- Code editing features (LSP, completion, etc.)
 require('notifications')   -- Notification handling
 require('miscellaneous')   -- Other miscellaneous configurations
+require('terminal')        -- Floating terminal toggle
 

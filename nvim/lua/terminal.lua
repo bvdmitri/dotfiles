@@ -68,6 +68,7 @@ end
 function terminal.open_float()
     terminal.ensure_buf()
     terminal.float_win = vim.api.nvim_open_win(terminal.buf, true, terminal.float_config())
+    vim.wo[terminal.float_win].winblend = 0
     terminal.ensure_terminal()
     vim.cmd('startinsert')
 end
@@ -100,6 +101,19 @@ function terminal.toggle_split()
         terminal.open_split()
     end
 end
+
+-- Very often terminal output clashes with the blending option, 
+-- simply does not look nice, so I disable it for the terminal buffers
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    callback = function()
+        local buf = vim.api.nvim_get_current_buf()
+        if vim.bo[buf].buftype == "terminal" then
+            local win = vim.api.nvim_get_current_win()
+            vim.wo[win].winblend = 0
+            vim.b.miniindentscope_disable = true
+        end
+    end,
+})
 
 vim.api.nvim_create_autocmd('VimLeavePre', {
     callback = function()

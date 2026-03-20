@@ -24,10 +24,10 @@ claude.setup({
     window = {
         position = "float",
         float = {
-            width = "30%",
-            height = "100%",
-            row = 0,
-            col = 999,
+            width = "80%",
+            height = "80%",
+            row = "center",
+            col = "center",
             relative = "editor",
             border = "rounded",
         },

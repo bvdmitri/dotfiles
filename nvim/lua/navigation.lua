@@ -1,6 +1,6 @@
 vim.pack.add({
     { src = gh('nvim-mini/mini.jump2d') },
-    { src = gh('fnune/recall.nvim') },
+    { src = gh('bvdmitri/recall.nvim'), version = 'support-for-tab-pages' },
 })
 
 local keymap = require('keymap')

@@ -58,6 +58,11 @@ keymap.ntmap('<C-j>', '<CMD>wincmd j<CR>', 'Move to the bottom window')
 keymap.ntmap('<C-k>', '<CMD>wincmd k<CR>', 'Move to the top window')
 keymap.ntmap('<C-l>', '<CMD>wincmd l<CR>', 'Move to the right window')
 
+keymap.ntmap('<C-=>', '<CMD>tabnext<CR>', 'Move to the next tab')
+keymap.ntmap('<C-->', '<CMD>tabprevious<CR>', 'Move to the previous tab')
+keymap.ntmap('<C-t>', '<CMD>tabedit<CR>', 'Create a new tab')
+keymap.ntmap('\\t', '<CMD>tabclose<CR>', 'Close the current tab')
+
 keymap.nmap('<A-k>', ':resize -4<CR>', 'Make window smaller horizontally')
 keymap.nmap('<A-j>', ':resize +4<CR>', 'Make window larger horizontally')
 keymap.nmap('<A-h>', ':vertical resize -4<CR>', 'Make window smaller vertically')

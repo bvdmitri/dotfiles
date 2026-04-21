@@ -23,6 +23,7 @@ end
 
 -- This is only required to create a new session
 keymap.nmap('\\s', write_cwd_session, 'Write current session')
+keymap.nmap('\\S', MiniSessions.select, 'Select a session')
 
 require('mini.starter').setup()
 -- Custom settings for MiniIndentscope

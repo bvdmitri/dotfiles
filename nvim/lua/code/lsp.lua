@@ -11,6 +11,7 @@ require('mason-lspconfig').setup({
         'ts_ls',
         'lua_ls',
         'eslint',
+        'oxfmt',
         'basedpyright',
         'ruff',
         'clangd',

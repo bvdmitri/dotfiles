@@ -3,6 +3,7 @@ local keymap = {}
 vim.pack.add({
     { src = gh('folke/which-key.nvim') },
     { src = gh('nvim-mini/mini.keymap') },
+    { src = gh('takac/vim-hardtime') }
 })
 
 local WhichKey = require('which-key')
@@ -51,6 +52,12 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<Up>', '<Nop>')
 vim.keymap.set({ 'n', 'i', 'v' }, '<Down>', '<Nop>')
 vim.keymap.set({ 'n', 'i', 'v' }, '<Left>', '<Nop>')
 vim.keymap.set({ 'n', 'i', 'v' }, '<Right>', '<Nop>')
+
+vim.g.hardtime_default_on = 1
+vim.g.hardtime_showmsg = 1
+vim.g.hardtime_allow_different_key = 1
+vim.g.hardtime_maxcount = 2
+vim.g.hardtime_motion_with_count_resets = 1
 
 -- Global group
 keymap.ntmap('<C-h>', '<CMD>wincmd h<CR>', 'Move to the left window')

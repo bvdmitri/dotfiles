@@ -10,8 +10,8 @@ local terminal     = {}
 
 terminal.config    = {
     float = {
-        width  = 0.8, -- fraction of editor columns
-        height = 0.7, -- fraction of editor lines
+        width  = 0.49, -- fraction of editor columns
+        height = 1.0, -- fraction of editor lines
         border = 'rounded',
     },
     split = {
@@ -26,7 +26,7 @@ terminal.split_win = nil
 function terminal.float_config()
     local width  = math.floor(vim.o.columns * terminal.config.float.width)
     local height = math.floor(vim.o.lines * terminal.config.float.height)
-    local col    = math.floor((vim.o.columns - width) / 2)
+    local col    = 0 -- math.floor((vim.o.columns - width) / 2)
     local row    = math.floor((vim.o.lines - height) / 2)
     return {
         relative = 'editor',
